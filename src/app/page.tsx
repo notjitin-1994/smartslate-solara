@@ -336,7 +336,7 @@ export default function HomePage() {
     <>
       {/* Hero Section - Split Layout */}
       <HeroSection ref={heroRef}>
-        <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, py: { xs: 8, md: 12 } }}>
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, py: { xs: 8, md: 12 } }}>
           <motion.div
             initial={{ opacity: 0 }}
             animate={heroInView ? { opacity: 1 } : {}}
@@ -556,7 +556,7 @@ export default function HomePage() {
 
       {/* Bento Grid Features Section */}
       <Box ref={bentoRef} sx={{ py: 12, backgroundColor: 'background.paper' }}>
-        <Container maxWidth="xl">
+        <Container maxWidth="lg">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={bentoInView ? { opacity: 1, y: 0 } : {}}
@@ -831,7 +831,7 @@ export default function HomePage() {
           borderTop: '1px solid rgba(167, 218, 219, 0.2)',
         }}
       >
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
