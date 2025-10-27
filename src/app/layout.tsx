@@ -37,9 +37,17 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/logo.png", type: "image/png", sizes: "16x16" },
-      { url: "/logo.png", type: "image/png", sizes: "32x32" },
+      { url: "/images/courses/swirl.png?v=favicon4", type: "image/png", sizes: "16x16" },
+      { url: "/images/courses/swirl.png?v=favicon4", type: "image/png", sizes: "32x32" },
+      { url: "/images/courses/swirl.png?v=favicon4", type: "image/png", sizes: "192x192" },
+      { url: "/images/courses/swirl.png?v=favicon4", type: "image/png", sizes: "512x512" },
     ],
+    apple: [
+      { url: "/images/courses/swirl.png?v=favicon4" }
+    ],
+    shortcut: [
+      { url: "/images/courses/swirl.png?v=favicon4" }
+    ]
   }
 };
 
