@@ -1,0 +1,676 @@
+@import "tailwindcss";
+
+:root {
+  /* Smartslate Brand Colors */
+  --primary-accent: #a7dadb;
+  --primary-accent-light: #d0edf0;
+  --primary-accent-dark: #7bc5c7;
+  --secondary-accent: #4F46E5;
+  --secondary-accent-light: #7C69F5;
+  --secondary-accent-dark: #3730A3;
+  
+  /* Background Colors */
+  --background-dark: #020C1B;
+  --background-paper: #0d1b2a;
+  --background-surface: #142433;
+  
+  /* Text Colors */
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0c5c6;
+  --text-disabled: #7a8a8b;
+  --text-muted: #b0c5c6; /* alias for compatibility */
+  
+  /* Border Colors */
+  --border-color: #2a3a4a;
+  --border-subtle: 1px solid #2a3a4a;
+  --input-border: #2a3a4a; /* alias for compatibility */
+  
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 64px;
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  
+  /* Transitions */
+  --transition-fast: all 0.2s ease-in-out;
+  --transition-medium: all 0.3s ease-in-out;
+  --transition-slow: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-glow: 0 0 30px rgba(167, 218, 219, 0.2);
+  
+  /* Container Backgrounds */
+  --container-bg: rgba(13, 27, 42, 0.5);
+  --container-bg-elevated: rgba(20, 36, 51, 0.6);
+  --glass-bg: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --input-bg: rgba(255, 255, 255, 0.05);
+  
+  /* Blur Effects */
+  --blur-sm: blur(8px);
+  --blur-md: blur(12px);
+  --blur-lg: blur(20px);
+  
+  /* Font Families */
+  --font-heading: 'Quicksand', sans-serif;
+  --font-body: 'Lato', sans-serif;
+  
+  /* Z-index Scale */
+  --z-base: 1;
+  --z-dropdown: 10;
+  --z-sticky: 50;
+  --z-fixed: 100;
+  --z-modal-backdrop: 500;
+  --z-modal: 600;
+  --z-popover: 700;
+  --z-tooltip: 800;
+  --z-header: 1000;
+}
+
+/* Theme configuration for Next.js integration */
+/* 
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+*/
+
+body {
+  background: var(--background-dark);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.5em;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent horizontal overflow that can cause header bleed on mobile */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Remove default button styles */
+button {
+  font-family: inherit;
+}
+
+p, ul, ol, blockquote {
+  margin: 0 0 1em;
+}
+small { font-size: 0.875em; }
+
+/* Accent text styles for dangerouslySetInnerHTML */
+.accent {
+  color: var(--primary-accent);
+  font-weight: 700;
+}
+
+/* Utility Classes */
+.glass-effect {
+  background-color: var(--glass-bg);
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-effect-strong {
+  background-color: var(--container-bg);
+  backdrop-filter: var(--blur-lg);
+  -webkit-backdrop-filter: var(--blur-lg);
+  border: 1px solid var(--border-color);
+}
+
+/* Ensure proper contrast for glass effects */
+.glass-effect-strong .text-primary-accent,
+.glass-effect .text-primary-accent {
+  color: var(--primary-accent);
+  opacity: 1;
+}
+
+.glow-effect {
+  box-shadow: var(--shadow-glow);
+}
+
+.text-gradient {
+  color: var(--primary-accent);
+  font-weight: 700;
+}
+
+/* Text Color Utilities */
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-primary-accent {
+  color: var(--primary-accent);
+}
+
+.text-secondary-accent {
+  color: var(--secondary-accent);
+}
+
+/* Background Color Utilities */
+.bg-primary-accent {
+  background-color: var(--primary-accent);
+}
+
+.bg-secondary-accent {
+  background-color: var(--secondary-accent);
+}
+
+.bg-secondary-accent-dark {
+  background-color: var(--secondary-accent-dark);
+}
+
+/* Border Color Utilities */
+.border-primary-accent {
+  border-color: var(--primary-accent);
+}
+
+.border-border-color {
+  border-color: var(--border-color);
+}
+
+/* Background Utilities with Opacity */
+.bg-input-bg {
+  background-color: var(--input-bg);
+}
+
+/* Shadow Utilities */
+.shadow-primary-accent\/20 {
+  box-shadow: 0 4px 20px rgba(167, 218, 219, 0.2);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-surface);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-accent-dark);
+}
+
+/* Animation utilities */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* Focus States */
+*:focus-visible {
+  outline: 2px solid var(--primary-accent);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--primary-accent);
+  color: var(--background-dark);
+}
+
+/* Modal Content Styles */
+.modal-content {
+  background-color: var(--container-bg);
+  backdrop-filter: var(--blur-lg);
+  -webkit-backdrop-filter: var(--blur-lg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Modal Typography */
+.modal-content h2,
+.modal-content h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+.modal-content p,
+.modal-content label,
+.modal-content input,
+.modal-content select,
+.modal-content textarea,
+.modal-content button {
+  font-family: var(--font-body);
+}
+
+/* Brand Color Classes */
+.bg-background-dark {
+  background-color: var(--background-dark);
+}
+
+.text-background-dark {
+  color: var(--background-dark);
+}
+
+.bg-primary-accent\/10 {
+  background-color: rgba(167, 218, 219, 0.1);
+}
+
+.bg-primary-accent\/20 {
+  background-color: rgba(167, 218, 219, 0.2);
+}
+
+.border-primary-accent\/10 {
+  border-color: rgba(167, 218, 219, 0.1);
+}
+
+.text-secondary\/70 {
+  color: rgba(176, 197, 198, 0.7);
+}
+
+/* Accessibility: Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Main content spacing to account for fixed header */
+.main-content {
+  padding-top: 120px; /* Ensure content is below fixed header with extra clearance */
+}
+
+@media (max-width: 640px) {
+  .main-content {
+    padding-top: 100px; /* Ensure content is below fixed header on mobile with extra clearance */
+  }
+}
+
+/* Enhanced mobile experience */
+@media (max-width: 768px) {
+  .modal-content {
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+  
+  /* Better touch targets on mobile */
+  button, 
+  [role="button"],
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improved spacing for mobile */
+  .glass-effect-strong {
+    padding: 1.5rem;
+  }
+}
+
+/* Safari/iPad specific fixes */
+@supports (-webkit-appearance: none) {
+  /* Force hardware acceleration for better Safari performance */
+  .blur-3xl {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  /* Improve radial-gradient rendering on Safari */
+  [style*="radial-gradient"] {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  
+  /* Better blur support for Safari */
+  .backdrop-blur-sm {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+  
+  .backdrop-blur-md {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+  
+  .backdrop-blur-lg {
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
+}
+
+/* Improved focus styles for better accessibility */
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--primary-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+/* CTA Button Utilities */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 10px 24px;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: var(--radius-md);
+  transition: var(--transition-fast);
+  line-height: 1.2;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--primary-accent);
+  outline-offset: 2px;
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4f46e5, #3730a3);
+  color: #ffffff;
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #3730a3, #312e81);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #ffffff;
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #4f46e5, #3730a3);
+}
+
+.btn-tertiary {
+  background: transparent;
+  border: 2px solid var(--primary-accent);
+  color: var(--primary-accent);
+}
+
+.btn-tertiary:hover {
+  background-color: rgba(167, 218, 219, 0.1);
+  border-color: var(--primary-accent-light);
+}
+
+.btn-lg {
+  padding: 12px 32px;
+  font-size: 1.125rem;
+}
+
+.btn-sm {
+  padding: 6px 16px;
+  font-size: 0.875rem;
+}
+/* CTA Icon Animations */
+@keyframes icon-bounce-y {
+  0%, 100% { transform: translateY(0) }
+  50% { transform: translateY(-3px) }
+}
+@keyframes icon-float {
+  0%, 100% { transform: scale(1) }
+  50% { transform: scale(1.1) }
+}
+@keyframes icon-pulse {
+  0% { transform: scale(1); opacity: 1 }
+  50% { transform: scale(1.05); opacity: 0.95 }
+  100% { transform: scale(1); opacity: 1 }
+}
+@keyframes icon-wiggle {
+  0%, 100% { transform: rotate(0deg) }
+  50% { transform: rotate(-6deg) }
+}
+.icon-anim {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-float { animation: icon-float 2.4s ease-in-out infinite }
+.icon-pulse { animation: icon-pulse 2.2s ease-in-out infinite }
+.icon-bounce-y { animation: icon-bounce-y 1.8s ease-in-out infinite }
+.icon-wiggle { animation: icon-wiggle 2.6s ease-in-out infinite }
+
+/* Revamped social auth buttons */
+.social-auth-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .social-auth-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.social-auth-btn {
+  position: relative;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  overflow: hidden;
+}
+
+.social-auth-btn:hover {
+  border-color: var(--primary-accent);
+}
+
+.social-auth-btn .glow {
+  position: absolute;
+  inset: -1px;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.social-auth-btn:hover .glow,
+.social-auth-btn:focus-visible .glow {
+  opacity: 1;
+}
+
+.btn:hover .icon-float,
+.btn:hover .icon-pulse,
+.btn:hover .icon-bounce-y,
+.btn:hover .icon-wiggle {
+  animation-duration: 1.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-float,
+  .icon-pulse,
+  .icon-bounce-y,
+  .icon-wiggle {
+    animation: none !important;
+  }
+}
+
+/* Brand-compliant dropdowns (native <select> on desktop) */
+select,
+.brand-select {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 10px 12px; /* base padding; components can add right padding when using a custom caret */
+  line-height: 1.2;
+  transition: var(--transition-fast);
+}
+
+select:hover,
+.brand-select:hover {
+  border-color: var(--primary-accent);
+}
+
+select:focus,
+.brand-select:focus {
+  outline: none;
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 0 3px rgba(167, 218, 219, 0.2);
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+select:disabled,
+.brand-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Dropdown list styling for browsers that honor option styling */
+select option {
+  background-color: var(--background-paper);
+  color: var(--text-primary);
+}
+
+select optgroup {
+  background-color: var(--background-paper);
+  color: var(--text-secondary);
+}
+
+/* Hide default arrow in older browsers */
+select::-ms-expand {
+  display: none;
+}
+
+/* Firefox focus ring improvement */
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 var(--text-primary);
+}
