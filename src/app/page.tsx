@@ -486,10 +486,10 @@ export default function HomePage() {
                 {/* Trust Indicators */}
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                   {[
-                    'Trusted by 100,000+ learners',
-                    'Serving 50+ countries',
-                    'Enterprise-grade security',
-                    'No credit card required'
+                    '70-80% faster development',
+                    '3-5x higher completion rates',
+                    'Replaces 7-15 different tools',
+                    'AI-native platform'
                   ].map((text, index) => (
                     <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <CheckCircle2 size={16} color="#a7dadb" />

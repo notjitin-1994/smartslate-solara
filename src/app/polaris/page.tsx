@@ -450,10 +450,10 @@ export default function PolarisPage() {
                 {/* Trust Indicators */}
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                   {[
-                    '2 free blueprints forever',
-                    'No credit card required',
-                    'Cancel anytime',
-                    'Enterprise-grade security',
+                    'Bloom\'s Taxonomy aligned',
+                    'Solves the #1 ID challenge',
+                    '30-40% time saved per project',
+                    'SOC 2 & GDPR compliant',
                   ].map((text, index) => (
                     <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <CheckCircle2 size={16} color={polarisColors.primary} />
@@ -564,7 +564,7 @@ export default function PolarisPage() {
       </HeroSection>
 
       {/* Stats Section */}
-      <Box id="polaris-advantage" ref={statsRef} sx={{ py: 10, backgroundColor: '#020C1B', borderTop: `1px solid ${polarisColors.primary}20` }}>
+      <Box id="polaris-advantage" ref={statsRef} sx={{ py: 3, backgroundColor: '#020C1B', borderTop: `1px solid ${polarisColors.primary}20` }}>
         <Container maxWidth="lg">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -633,7 +633,7 @@ export default function PolarisPage() {
       </Box>
 
       {/* Problem/Solution Section */}
-      <Box ref={problemRef} sx={{ py: 10, backgroundColor: '#020C1B' }}>
+      <Box ref={problemRef} sx={{ py: 3, backgroundColor: '#020C1B' }}>
         <Container maxWidth="lg">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -766,7 +766,7 @@ export default function PolarisPage() {
       </Box>
 
       {/* Features Section */}
-      <Box ref={featuresRef} sx={{ py: 10, backgroundColor: '#020C1B', borderTop: `1px solid ${polarisColors.primary}20` }}>
+      <Box ref={featuresRef} sx={{ py: 3, backgroundColor: '#020C1B', borderTop: `1px solid ${polarisColors.primary}20` }}>
         <Container maxWidth="lg">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -864,7 +864,7 @@ export default function PolarisPage() {
       </Box>
 
       {/* Target Users Section */}
-      <Box ref={usersRef} sx={{ py: 10, backgroundColor: '#020C1B' }}>
+      <Box ref={usersRef} sx={{ py: 3, backgroundColor: '#020C1B' }}>
         <Container maxWidth="lg">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -969,7 +969,7 @@ export default function PolarisPage() {
       {/* Final CTA Section */}
       <Box
         sx={{
-          py: 10,
+          py: 3,
           background: '#020C1B',
           borderTop: `1px solid ${polarisColors.primary}30`,
         }}
