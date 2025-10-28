@@ -35,3 +35,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDE
+.idea/
+
+# Documentation drafts
+landingpage.md
+smartslate-vision.md
+solara-vision.md
+
+# Polaris page (not ready for production)
+src/app/polaris/
