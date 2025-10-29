@@ -5,7 +5,7 @@ import { styled, keyframes } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Compass,
   Network,
@@ -21,6 +21,9 @@ import {
   ChevronDown,
   Star
 } from 'lucide-react';
+import { SkipToContent } from '@/components/accessibility/SkipToContent';
+import { AccessibleModuleCard } from '@/components/cards/AccessibleModuleCard';
+import { useOptimizedAnimations } from '@/hooks/useOptimizedAnimations';
 
 // Keyframe animations
 const float = keyframes`
@@ -386,10 +389,31 @@ export default function HomePage() {
   const [modulesRef, modulesInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [expandedModule, setExpandedModule] = useState<string | null>(null);
 
+  // Use optimized animations hook
+  const {
+    shouldOptimize,
+    getAnimationProps,
+    createIntersectionObserver,
+    getPerformanceStyles,
+  } = useOptimizedAnimations({
+    performanceMode: 'balanced',
+    reduceMotion: false,
+  });
+
+  // Performance optimization: Clean up observers on unmount
+  useEffect(() => {
+    return () => {
+      // Cleanup handled by the hook
+    };
+  }, []);
+
   return (
     <>
+      {/* Skip to Content Link */}
+      <SkipToContent />
+
       {/* Hero Section */}
-      <HeroSection ref={heroRef}>
+      <HeroSection ref={heroRef} role="banner">
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, py: { xs: 8, md: 12 } }}>
           <Grid container spacing={6} alignItems="center">
             {/* Left Content */}
@@ -714,16 +738,18 @@ export default function HomePage() {
       </HeroSection>
 
       {/* Stats Section */}
-      <Box ref={statsRef} sx={{ py: 10, backgroundColor: '#020C1B', borderTop: '1px solid rgba(167, 218, 219, 0.1)' }}>
+      <Box ref={statsRef} sx={{ py: 10, backgroundColor: '#020C1B', borderTop: '1px solid rgba(167, 218, 219, 0.1)' }} role="region" aria-labelledby="stats-heading">
         <Container maxWidth="lg">
           <Grid container spacing={4} alignItems="stretch">
             {/* Stats Header */}
             <Grid size={{ xs: 12, md: 4 }}>
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={statsInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.5 }}
-                style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+                {...getAnimationProps({
+                  initial: { opacity: 0, x: -20 },
+                  animate: statsInView ? { opacity: 1, x: 0 } : {},
+                  transition: { duration: shouldOptimize ? 0 : 0.5 }
+                })}
+                style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', ...getPerformanceStyles() }}
               >
                 <Typography
                   variant="overline"
