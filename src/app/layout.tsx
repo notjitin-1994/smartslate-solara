@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -72,11 +73,13 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeProvider>
-          <Header />
-          <main className="main-content">
-            {children}
-          </main>
-          <Footer />
+          <SmoothScroll>
+            <Header />
+            <main className="main-content">
+              {children}
+            </main>
+            <Footer />
+          </SmoothScroll>
         </ThemeProvider>
       </body>
     </html>
