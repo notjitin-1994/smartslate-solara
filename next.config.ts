@@ -13,9 +13,6 @@ const nextConfig: NextConfig = {
       'framer-motion',
     ],
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },

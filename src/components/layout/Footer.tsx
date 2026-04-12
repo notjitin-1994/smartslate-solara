@@ -110,6 +110,6 @@ export default function Footer() {
           </Box>
         </Box>
       </Container>
-    </Box>
+    </FooterWrapper>
   );
 }
