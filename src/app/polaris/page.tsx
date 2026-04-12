@@ -37,41 +37,30 @@ const HeroSection = styled(Box)(() => ({
   background: 'radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.05) 0%, #020C1B 100%)',
 }));
 
-const FeatureCard = styled(motion.div)(() => ({
-  background: 'rgba(13, 27, 42, 0.4)',
-  backdropFilter: 'blur(30px)',
-  border: '1px solid rgba(6, 182, 212, 0.1)',
-  borderRadius: '32px',
-  padding: '40px',
-  height: '100%',
-  transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-  '&:hover': {
-    transform: 'translateY(-12px)',
-    border: `1px solid ${polarisColors.primary}50`,
-    boxShadow: `0 30px 60px ${polarisColors.primary}20`,
-  },
-}));
-
 export default function PolarisPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress, revealVariants, getAnimationProps } = useOptimizedAnimations();
+  const { scrollYProgress, revealVariants } = useOptimizedAnimations();
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 90]);
 
   useGSAP(() => {
-    gsap.from('.polaris-reveal', {
-      y: 60,
-      opacity: 0,
-      filter: 'blur(15px)',
-      duration: 1.2,
-      stagger: 0.15,
-      ease: 'power4.out'
+    const targets = gsap.utils.toArray('.polaris-reveal');
+    gsap.set(targets, { opacity: 0, y: 30 });
+    
+    gsap.to(targets, {
+      y: 0,
+      opacity: 1,
+      duration: 1,
+      stagger: 0.1,
+      ease: 'power3.out',
+      clearProps: 'all'
     });
 
     gsap.from('.polaris-visual', {
       scale: 0.8,
       opacity: 0,
       duration: 2,
-      ease: 'expo.out'
+      ease: 'expo.out',
+      delay: 0.5
     });
   }, { scope: containerRef });
 
@@ -90,20 +79,20 @@ export default function PolarisPage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="polaris-reveal">
+              <Box className="polaris-reveal" sx={{ opacity: 0 }}>
                 <Chip label="NOW IN PUBLIC BETA" sx={{ mb: 4, bgcolor: 'rgba(6, 182, 212, 0.1)', color: polarisColors.primary, fontWeight: 800 }} />
               </Box>
-              <Box className="polaris-reveal">
+              <Box className="polaris-reveal" sx={{ opacity: 0 }}>
                 <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
                   The North Star of <span style={{ color: polarisColors.primary }}>Learning Design.</span>
                 </Typography>
               </Box>
-              <Box className="polaris-reveal">
+              <Box className="polaris-reveal" sx={{ opacity: 0 }}>
                 <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 600 }}>
                   Polaris automates the most difficult 40% of instructional design—transforming raw requirements into rigorous blueprints in minutes.
                 </Typography>
               </Box>
-              <Box className="polaris-reveal" sx={{ display: 'flex', gap: 3 }}>
+              <Box className="polaris-reveal" sx={{ display: 'flex', gap: 3, opacity: 0 }}>
                 <MagneticButton variant="contained" sx={{ bgcolor: polarisColors.primary, color: '#020C1B' }}>Start Free Trial</MagneticButton>
                 <Button variant="text" sx={{ color: polarisColors.primary, fontWeight: 700 }}>Watch Demo</Button>
               </Box>

@@ -4,7 +4,7 @@ import { Box, Container, Typography, Button, Grid, Chip } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
 import { motion, AnimatePresence, useTransform } from 'framer-motion';
 import Link from 'next/link';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import {
@@ -23,7 +23,6 @@ import { useOptimizedAnimations } from '@/hooks/useOptimizedAnimations';
 import { MagneticButton } from '@/components/animations/MagneticButton';
 import { FloatingOrb } from '@/components/animations/FloatingOrb';
 
-// Keyframes for GSAP to augment
 const starGlow = keyframes`
   0%, 100% { filter: drop-shadow(0 0 15px rgba(167, 218, 219, 0.4)); transform: scale(1); }
   50% { filter: drop-shadow(0 0 35px rgba(167, 218, 219, 0.8)); transform: scale(1.05); }
@@ -78,48 +77,32 @@ const modules = [
 
 export default function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress, revealVariants } = useOptimizedAnimations();
 
-  // GSAP Entrance Animation
   useGSAP(() => {
-    const tl = gsap.timeline();
+    // Force immediate visibility if GSAP fails for some reason
+    const targets = gsap.utils.toArray('.hero-reveal');
     
-    tl.from('.hero-reveal', {
-      y: 100,
+    gsap.set(targets, { opacity: 0, y: 30 });
+    
+    gsap.to(targets, {
+      y: 0,
+      opacity: 1,
+      duration: 1,
+      stagger: 0.1,
+      ease: 'power3.out',
+      clearProps: 'all' // Crucial: removes GSAP-added styles after completion
+    });
+
+    gsap.from('.orbit-visual', {
+      scale: 0.8,
       opacity: 0,
-      filter: 'blur(20px)',
       duration: 1.5,
-      stagger: 0.2,
-      ease: 'expo.out'
-    })
-    .from('.orbit-visual', {
-      scale: 0.5,
-      opacity: 0,
-      rotate: -180,
-      duration: 2,
-      ease: 'elastic.out(1, 0.75)'
-    }, '-=1');
-
-    // Subtle parallax on mouse move for the hero
-    const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      const xPos = (clientX / window.innerWidth - 0.5) * 20;
-      const yPos = (clientY / window.innerHeight - 0.5) * 20;
-      
-      gsap.to('.hero-visual-container', {
-        x: xPos,
-        y: yPos,
-        duration: 1,
-        ease: 'power2.out'
-      });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+      ease: 'back.out(1.7)',
+      delay: 0.5
+    });
   }, { scope: containerRef });
 
-  // Parallax transforms for scroll
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -200]);
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 90]);
 
@@ -127,15 +110,14 @@ export default function HomePage() {
     <Box ref={containerRef} sx={{ background: '#020C1B' }}>
       <SkipToContent />
 
-      {/* Hero Section */}
-      <HeroSection ref={heroRef} role="banner">
+      <HeroSection role="banner">
         <FloatingOrb size="80vw" color="#06b6d4" x="-10%" y="-10%" opacity={0.15} />
         <FloatingOrb size="60vw" color="#7C69F5" x="50%" y="30%" opacity={0.1} />
 
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="hero-reveal">
+              <Box className="hero-reveal" sx={{ opacity: 0 }}>
                 <Chip
                   icon={<Sparkles size={16} />}
                   label="2026 Innovation Awards Finalist"
@@ -143,19 +125,19 @@ export default function HomePage() {
                 />
               </Box>
 
-              <Box className="hero-reveal">
-                <Typography variant="h1" sx={{ mb: 3, fontSize: { xs: '3.5rem', md: '5.5rem' }, fontWeight: 900, lineHeight: 1, color: '#fff', letterSpacing: '-0.04em' }}>
+              <Box className="hero-reveal" sx={{ opacity: 0 }}>
+                <Typography variant="h1" sx={{ mb: 3, fontSize: { xs: '3rem', md: '5.5rem' }, fontWeight: 900, lineHeight: 1, color: '#fff', letterSpacing: '-0.04em' }}>
                   The Future of Learning, <GradientText>Orchestrated.</GradientText>
                 </Typography>
               </Box>
 
-              <Box className="hero-reveal">
+              <Box className="hero-reveal" sx={{ opacity: 0 }}>
                 <Typography variant="h5" sx={{ mb: 6, color: '#b0c5c6', lineHeight: 1.5, fontSize: '1.5rem', fontWeight: 500, maxWidth: '600px' }}>
                   Solara is the world's first unified AI-native learning ecosystem. One intelligence, six modules, total transformation.
                 </Typography>
               </Box>
 
-              <Box className="hero-reveal" sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+              <Box className="hero-reveal" sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', opacity: 0 }}>
                 <MagneticButton component={Link} href="/polaris" variant="contained" endIcon={<ArrowRight size={20} />} strength={0.2} sx={{ background: '#a7dadb', color: '#020C1B' }}>
                   Explore Polaris
                 </MagneticButton>
@@ -165,30 +147,24 @@ export default function HomePage() {
               </Box>
             </Grid>
 
-            {/* Interactive Visual Hub */}
             <Grid size={{ xs: 12, md: 5 }} sx={{ display: { xs: 'none', md: 'block' } }}>
-              <Box className="hero-visual-container">
-                <motion.div style={{ y: y1, rotate: rotate }} className="orbit-visual">
-                  <Box sx={{ width: 500, height: 500, borderRadius: '50%', border: '1px solid rgba(167, 218, 219, 0.15)', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    {/* Central Star */}
-                    <Box sx={{ width: 140, height: 140, borderRadius: '50%', background: 'radial-gradient(circle, #a7dadb 0%, #7C69F5 100%)', zIndex: 2, animation: `${starGlow} 4s infinite ease-in-out`, boxShadow: '0 0 60px rgba(124, 105, 245, 0.4)' }} />
-                    
-                    {/* Orbiting Modules */}
-                    {modules.map((m, i) => {
-                      const angle = (i * 60) * (Math.PI / 180);
-                      return (
-                        <Box key={m.id} sx={{ position: 'absolute', left: `${250 + Math.cos(angle) * 200 - 30}px`, top: `${250 + Math.sin(angle) * 200 - 30}px` }}>
-                          <motion.div whileHover={{ scale: 1.2 }} transition={{ type: 'spring', stiffness: 300 }}>
-                            <Box sx={{ width: 64, height: 64, borderRadius: '18px', background: m.accentColor, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 10px 25px ${m.accentColor}50` }}>
-                              <m.icon size={32} color="#020C1B" />
-                            </Box>
-                          </motion.div>
-                        </Box>
-                      );
-                    })}
-                  </Box>
-                </motion.div>
-              </Box>
+              <motion.div style={{ y: y1, rotate: rotate }} className="orbit-visual">
+                <Box sx={{ width: 500, height: 500, borderRadius: '50%', border: '1px solid rgba(167, 218, 219, 0.15)', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ width: 140, height: 140, borderRadius: '50%', background: 'radial-gradient(circle, #a7dadb 0%, #7C69F5 100%)', zIndex: 2, animation: `${starGlow} 4s infinite ease-in-out`, boxShadow: '0 0 60px rgba(124, 105, 245, 0.4)' }} />
+                  {modules.map((m, i) => {
+                    const angle = (i * 60) * (Math.PI / 180);
+                    return (
+                      <Box key={m.id} sx={{ position: 'absolute', left: `${250 + Math.cos(angle) * 200 - 30}px`, top: `${250 + Math.sin(angle) * 200 - 30}px` }}>
+                        <motion.div whileHover={{ scale: 1.2 }} transition={{ type: 'spring', stiffness: 300 }}>
+                          <Box sx={{ width: 64, height: 64, borderRadius: '18px', background: m.accentColor, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 10px 25px ${m.accentColor}50` }}>
+                            <m.icon size={32} color="#020C1B" />
+                          </Box>
+                        </motion.div>
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </motion.div>
             </Grid>
           </Grid>
         </Container>
@@ -199,7 +175,6 @@ export default function HomePage() {
         </motion.div>
       </HeroSection>
 
-      {/* Modules Section with GSAP ScrollTrigger */}
       <Box sx={{ py: 20, background: '#020C1B' }}>
         <Container maxWidth="lg">
           <Box sx={{ textAlign: 'center', mb: 12 }}>
@@ -235,7 +210,6 @@ export default function HomePage() {
         </Container>
       </Box>
 
-      {/* CTA Section */}
       <Box sx={{ py: 20, background: 'linear-gradient(0deg, #020C1B 0%, #03142B 100%)', position: 'relative', overflow: 'hidden' }}>
         <FloatingOrb size="50vw" color="#7C69F5" x="70%" y="-10%" opacity={0.1} />
         <Container maxWidth="md" sx={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>

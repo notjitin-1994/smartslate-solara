@@ -3,6 +3,9 @@
 import { Box, Container, Typography, Button, Grid, Chip } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRef } from 'react';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
 import {
   Sparkles,
   Rocket,
@@ -27,11 +30,6 @@ const novaColors = {
   light: '#4ade80',
   dark: '#16a34a',
 };
-
-const pulse = keyframes`
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.05); }
-`;
 
 const HeroSection = styled(Box)(() => ({
   minHeight: '100vh',
@@ -58,7 +56,22 @@ const FeatureCard = styled(motion.div)(() => ({
 }));
 
 export default function NovaPage() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const { getStaggerProps, revealVariants, getAnimationProps } = useOptimizedAnimations();
+
+  useGSAP(() => {
+    const targets = gsap.utils.toArray('.nova-reveal');
+    gsap.set(targets, { opacity: 0, y: 30 });
+    
+    gsap.to(targets, {
+      y: 0,
+      opacity: 1,
+      duration: 1,
+      stagger: 0.1,
+      ease: 'power3.out',
+      clearProps: 'all'
+    });
+  }, { scope: containerRef });
 
   const features = [
     { icon: Brain, title: 'Pedagogical AI', desc: 'Content that isn\'t just text—it\'s structured for maximum retention and engagement.' },
@@ -67,52 +80,34 @@ export default function NovaPage() {
   ];
 
   return (
-    <Box sx={{ background: '#020C1B', color: '#fff' }}>
+    <Box ref={containerRef} sx={{ background: '#020C1B', color: '#fff' }}>
       <HeroSection>
         <FloatingOrb size="700px" color={novaColors.primary} x="70%" y="-10%" delay={0} duration={30} />
         
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <motion.div 
-                initial="hidden" 
-                whileInView="visible" 
-                viewport={{ once: true, amount: 0.1 }}
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: {
-                    opacity: 1,
-                    transition: {
-                      staggerChildren: 0.1,
-                      delayChildren: 0.2
-                    }
-                  }
-                }}
-              >
-                <motion.div variants={revealVariants}>
-                  <Chip 
-                    icon={<Clock size={14} />}
-                    label="COMING Q3 2026" 
-                    sx={{ mb: 4, bgcolor: 'rgba(34, 197, 94, 0.1)', color: novaColors.primary, fontWeight: 800, px: 1 }} 
-                  />
-                </motion.div>
-                <motion.div variants={revealVariants}>
-                  <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
-                    Content Creation, <span style={{ color: novaColors.primary }}>Supernova Speed.</span>
-                  </Typography>
-                </motion.div>
-                <motion.div variants={revealVariants}>
-                  <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 650 }}>
-                    Nova is the world's first AI co-author that understands learning science. Transform raw ideas into pedagogically sound content instantly.
-                  </Typography>
-                </motion.div>
-                <motion.div variants={revealVariants}>
-                  <Box sx={{ display: 'flex', gap: 3 }}>
-                    <MagneticButton variant="contained" sx={{ bgcolor: novaColors.primary }}>Join Waitlist</MagneticButton>
-                    <Button variant="text" sx={{ color: novaColors.primary, fontWeight: 700 }}>Request Early Access</Button>
-                  </Box>
-                </motion.div>
-              </motion.div>
+              <Box className="nova-reveal" sx={{ opacity: 0 }}>
+                <Chip 
+                  icon={<Clock size={14} />}
+                  label="COMING Q3 2026" 
+                  sx={{ mb: 4, bgcolor: 'rgba(34, 197, 94, 0.1)', color: novaColors.primary, fontWeight: 800, px: 1 }} 
+                />
+              </Box>
+              <Box className="nova-reveal" sx={{ opacity: 0 }}>
+                <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
+                  Content Creation, <span style={{ color: novaColors.primary }}>Supernova Speed.</span>
+                </Typography>
+              </Box>
+              <Box className="nova-reveal" sx={{ opacity: 0 }}>
+                <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 650 }}>
+                  Nova is the world's first AI co-author that understands learning science. Transform raw ideas into pedagogically sound content instantly.
+                </Typography>
+              </Box>
+              <Box className="nova-reveal" sx={{ display: 'flex', gap: 3, opacity: 0 }}>
+                <MagneticButton variant="contained" sx={{ bgcolor: novaColors.primary }}>Join Waitlist</MagneticButton>
+                <Button variant="text" sx={{ color: novaColors.primary, fontWeight: 700 }}>Request Early Access</Button>
+              </Box>
             </Grid>
 
             <Grid size={{ xs: 12, md: 5 }}>
@@ -209,7 +204,7 @@ export default function NovaPage() {
 
       {/* Early Access CTA */}
       <Box sx={{ py: 20, textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        <FloatingOrb size="600px" color={novaColors.primary} x="10%" y="40%" delay={0} duration={20} />
+        <FloatingOrb size="600px" color={novaColors.primary} x="10%" y="40%" delay={0} duration={20} opacity={0.1} />
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
           <motion.div {...getAnimationProps()}>
             <Rocket size={48} color={novaColors.primary} style={{ marginBottom: 24 }} />
