@@ -207,14 +207,14 @@ export default function Header() {
       <HeaderWrapper hide={hide}>
         <HeaderBackground />
         <HeaderContent>
-          <LogoLink href="/">
+          <LogoLink href="https://smartslate.io">
             <Image
               src="/logo.png"
-              alt="Smartslate Solara"
+              alt="Solara Logo"
               width={160}
-              height={40}
+              height={45}
               priority
-              style={{ height: 'auto' }}
+              style={{ objectFit: 'contain' }}
             />
           </LogoLink>
 
