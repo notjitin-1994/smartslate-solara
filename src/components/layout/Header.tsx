@@ -6,22 +6,18 @@ import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useOptimizedAnimations } from '@/hooks/useOptimizedAnimations';
 
-const HeaderWrapper = styled('header', {
+const HeaderWrapper = styled(motion.header, {
   shouldForwardProp: (prop) => prop !== 'hide'
 })<{ hide?: boolean }>(({ theme, hide }) => ({
   position: 'fixed',
   top: theme.spacing(2),
   left: '50%',
-  transform: hide
-    ? 'translateX(-50%) translateY(-20px) scale(0.95)'
-    : 'translateX(-50%) translateY(0) scale(1)',
   zIndex: 1000,
   width: 'calc(100vw - 32px)',
   maxWidth: theme.breakpoints.values.lg,
-  opacity: hide ? 0 : 1,
-  visibility: hide ? 'hidden' : 'visible',
-  transition: 'opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
   [theme.breakpoints.down('sm')]: {
     width: 'calc(100vw - 16px)',
     top: theme.spacing(1),
@@ -32,14 +28,11 @@ const HeaderBackground = styled(Box)(({ theme }) => ({
   position: 'absolute',
   inset: 0,
   backgroundColor: 'rgba(9, 21, 33, 0.4)',
-  backdropFilter: 'blur(16px) saturate(180%)',
-  WebkitBackdropFilter: 'blur(16px) saturate(180%)',
-  border: '1px solid #A7DADB',
-  borderRadius: theme.spacing(2),
-  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-  '@supports not (backdrop-filter: blur(1px))': {
-    backgroundColor: 'rgba(9, 21, 33, 0.85)',
-  },
+  backdropFilter: 'blur(20px) saturate(180%)',
+  WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+  border: '1px solid rgba(167, 218, 219, 0.3)',
+  borderRadius: theme.spacing(2.5),
+  boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.3)',
 }));
 
 const HeaderContent = styled(Container)(({ theme }) => ({
@@ -47,149 +40,59 @@ const HeaderContent = styled(Container)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
+  padding: `${theme.spacing(1.5)} ${theme.spacing(3)}`,
   width: '100%',
   [theme.breakpoints.down('sm')]: {
-    padding: `${theme.spacing(0.75)} ${theme.spacing(2)}`,
-  },
-}));
-
-const LogoLink = styled(Link)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  textDecoration: 'none',
-  height: 48,
-  transition: 'transform 0.2s ease',
-  '&:hover': {
-    transform: 'scale(1.05)',
-  },
-  [theme.breakpoints.down('sm')]: {
-    height: 44,
-  },
-}));
-
-const NavContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.spacing(4),
-}));
-
-const DesktopNav = styled('nav')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.spacing(3),
-  [theme.breakpoints.down('md')]: {
-    display: 'none',
+    padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
   },
 }));
 
 const NavLink = styled(Link)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: 'rgba(255, 255, 255, 0.7)',
   textDecoration: 'none',
-  fontSize: '0.9rem',
-  fontWeight: 500,
+  fontSize: '0.95rem',
+  fontWeight: 600,
   position: 'relative',
-  transition: 'color 0.2s ease',
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    bottom: -4,
-    left: 0,
-    width: 0,
-    height: '2px',
-    backgroundColor: theme.palette.primary.main,
-    transition: 'width 0.3s ease',
-  },
-  '&:hover::after': {
-    width: '100%',
-  },
+  padding: '8px 12px',
+  borderRadius: '12px',
+  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
   '&:hover': {
-    color: theme.palette.primary.main,
+    color: '#A7DADB',
+    backgroundColor: 'rgba(167, 218, 219, 0.1)',
   },
 }));
 
-const MobileMenuButton = styled(Button)(({ theme }) => ({
-  display: 'none',
-  minWidth: 'auto',
-  padding: theme.spacing(1),
-  color: theme.palette.text.primary,
-  [theme.breakpoints.down('md')]: {
-    display: 'flex',
-  },
-}));
-
-const MobileMenu = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'open'
-})<{ open: boolean }>(({ theme, open }) => ({
+const MobileMenu = styled(motion.div)(({ theme }) => ({
   position: 'fixed',
   top: 0,
-  right: open ? 0 : '-100%',
-  width: '80%',
+  right: 0,
+  width: '100%',
   maxWidth: '400px',
   height: '100vh',
-  backgroundColor: theme.palette.background.paper,
-  borderLeft: `1px solid ${theme.palette.divider}`,
+  backgroundColor: 'rgba(9, 21, 33, 0.95)',
+  backdropFilter: 'blur(20px)',
+  borderLeft: '1px solid rgba(167, 218, 219, 0.2)',
   padding: theme.spacing(4),
-  transition: 'right 0.3s ease-in-out',
   zIndex: 1001,
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(3),
-  overflowY: 'auto',
-}));
-
-const MobileNavLink = styled(Link)(({ theme }) => ({
-  color: theme.palette.text.primary,
-  textDecoration: 'none',
-  fontSize: '1.1rem',
-  fontWeight: 500,
-  padding: theme.spacing(2),
-  borderRadius: theme.shape.borderRadius,
-  transition: 'all 0.2s ease',
-  '&:hover': {
-    backgroundColor: 'rgba(167, 218, 219, 0.1)',
-    color: theme.palette.primary.main,
-  },
-}));
-
-const Overlay = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'open'
-})<{ open: boolean }>(({ open }) => ({
-  position: 'fixed',
-  inset: 0,
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  opacity: open ? 1 : 0,
-  visibility: open ? 'visible' : 'hidden',
-  transition: 'opacity 0.3s ease, visibility 0.3s ease',
-  zIndex: 1000,
+  gap: theme.spacing(2),
 }));
 
 export default function Header() {
   const [hide, setHide] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { useMagnetic, shouldOptimize } = useOptimizedAnimations();
+  const { ref: logoRef, position: logoPos, handleMouseMove: handleLogoMove, reset: resetLogo } = useMagnetic(0.2);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
-    let ticking = false;
-
     const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-
-          if (currentScrollY < lastScrollY || currentScrollY <= 50) {
-            setHide(false);
-          } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-            setHide(true);
-          }
-
-          lastScrollY = currentScrollY;
-          ticking = false;
-        });
-        ticking = true;
-      }
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 100) setHide(true);
+      else setHide(false);
+      lastScrollY = currentScrollY;
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -204,60 +107,84 @@ export default function Header() {
 
   return (
     <>
-      <HeaderWrapper hide={hide}>
+      <HeaderWrapper
+        animate={{ 
+          y: hide ? -100 : 0,
+          x: '-50%',
+          opacity: hide ? 0 : 1,
+          scale: hide ? 0.95 : 1
+        }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      >
         <HeaderBackground />
         <HeaderContent>
-          <LogoLink href="https://smartslate.io">
-            <Image
-              src="/logo.png"
-              alt="Solara Logo"
-              width={160}
-              height={45}
-              priority
-              style={{ objectFit: 'contain' }}
-            />
-          </LogoLink>
+          <motion.div
+            ref={logoRef}
+            animate={{ x: logoPos.x, y: logoPos.y }}
+            onMouseMove={(e: any) => handleLogoMove(e.nativeEvent)}
+            onMouseLeave={resetLogo}
+          >
+            <Link href="https://smartslate.io" style={{ display: 'flex' }}>
+              <Image src="/logo.png" alt="Solara Logo" width={140} height={40} priority style={{ objectFit: 'contain' }} />
+            </Link>
+          </motion.div>
 
-          <NavContainer>
-            <DesktopNav>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
               {navItems.map((item) => (
-                <NavLink key={item.label} href={item.href}>
-                  {item.label}
-                </NavLink>
+                <NavLink key={item.label} href={item.href}>{item.label}</NavLink>
               ))}
-            </DesktopNav>
-
-            <MobileMenuButton
+            </Box>
+            
+            <Button
               onClick={() => setMobileMenuOpen(true)}
-              aria-label="Open menu"
+              sx={{ display: { md: 'none' }, minWidth: 'auto', p: 1, color: '#A7DADB' }}
             >
               <Menu size={24} />
-            </MobileMenuButton>
-          </NavContainer>
+            </Button>
+          </Box>
         </HeaderContent>
       </HeaderWrapper>
 
-      <Overlay open={mobileMenuOpen} onClick={() => setMobileMenuOpen(false)} />
-      <MobileMenu open={mobileMenuOpen}>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button
-            onClick={() => setMobileMenuOpen(false)}
-            sx={{ minWidth: 'auto', p: 1 }}
-            aria-label="Close menu"
-          >
-            <X size={24} />
-          </Button>
-        </Box>
-        {navItems.map((item) => (
-          <MobileNavLink
-            key={item.label}
-            href={item.href}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            {item.label}
-          </MobileNavLink>
-        ))}
-      </MobileMenu>
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 1000, backdropFilter: 'blur(4px)' }}
+            />
+            <MobileMenu
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            >
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 4 }}>
+                <Button onClick={() => setMobileMenuOpen(false)} sx={{ color: '#fff' }}><X size={32} /></Button>
+              </Box>
+              {navItems.map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ x: 20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.1 + i * 0.05 }}
+                >
+                  <Link
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{ color: '#fff', fontSize: '2rem', fontWeight: 800, textDecoration: 'none', display: 'block', padding: '16px 0' }}
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
+              ))}
+            </MobileMenu>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }

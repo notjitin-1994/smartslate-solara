@@ -1,145 +1,115 @@
 'use client';
 
-import { Box, Container, Typography } from '@mui/material';
-import { useTheme, styled } from '@mui/material/styles';
+import { Box, Container, Typography, Grid, Divider } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
-
-const currentYear = new Date().getFullYear();
+import { motion } from 'framer-motion';
+import { useOptimizedAnimations } from '@/hooks/useOptimizedAnimations';
 
 const FooterWrapper = styled('footer')(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
-  borderTop: `1px solid ${theme.palette.divider}`,
-  padding: theme.spacing(6, 0),
-  marginTop: 'auto',
+  backgroundColor: '#020C1B',
+  color: '#fff',
+  padding: theme.spacing(10, 0, 4, 0),
+  borderTop: '1px solid rgba(167, 218, 219, 0.1)',
+  position: 'relative',
+  overflow: 'hidden',
 }));
 
-const FooterContent = styled(Container)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: theme.spacing(4),
-}));
-
-const LogoWrapper = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  marginBottom: theme.spacing(2),
+const FooterLink = styled(Link)(({ theme }) => ({
+  color: '#7a8a8b',
+  textDecoration: 'none',
+  fontSize: '0.95rem',
+  transition: 'all 0.3s ease',
+  display: 'block',
+  marginBottom: theme.spacing(1.5),
   '&:hover': {
-    opacity: 0.9,
+    color: '#A7DADB',
+    transform: 'translateX(4px)',
   },
 }));
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: 600,
-  marginBottom: theme.spacing(2),
-  color: theme.palette.text.primary,
-  fontSize: '1rem',
-}));
-
-
-const FooterLink = styled(Link)(({ theme }) => ({
-  display: 'block',
-  color: theme.palette.text.secondary,
-  marginBottom: theme.spacing(1),
-  textDecoration: 'none',
-  transition: 'color 0.2s ease',
-  fontSize: '0.9rem',
-  cursor: 'pointer',
-  '&:hover': {
-    color: theme.palette.primary.main,
-    textDecoration: 'none',
-  },
+  fontWeight: 800,
+  marginBottom: theme.spacing(3),
+  color: '#fff',
+  fontSize: '1.1rem',
+  letterSpacing: '0.05em',
+  textTransform: 'uppercase',
 }));
 
 export default function Footer() {
-  const theme = useTheme();
   const currentYear = new Date().getFullYear();
+  const { getAnimationProps } = useOptimizedAnimations();
 
   return (
     <FooterWrapper>
-      <FooterContent maxWidth="lg">
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '2fr 1fr 1fr 1fr 1fr' },
-            gap: 4
-          }}
-        >
-          {/* Company Info */}
-          <Box>
-            <LogoWrapper>
-              <Link href="/" aria-label="Smartslate Solara home" style={{ textDecoration: 'none' }}>
-                <Image
-                  src="/logo.png"
-                  alt="Smartslate Solara Logo"
-                  width={160}
-                  height={40}
-                  quality={100}
-                  loading="lazy"
-                  style={{ height: 'auto' }}
-                />
+      <Container maxWidth="lg">
+        <Grid container spacing={8}>
+          <Grid size={{ xs: 12, md: 4 }}>
+            <motion.div {...getAnimationProps()}>
+              <Link href="https://smartslate.io" style={{ display: 'inline-block', marginBottom: '24px' }}>
+                <Image src="/logo.png" alt="Solara Logo" width={160} height={45} style={{ objectFit: 'contain' }} />
               </Link>
-            </LogoWrapper>
-            <Typography variant="body1" color="text.secondary" sx={{ my: 2 }}>
-              AI-powered learning engine revolutionizing educational technology through intelligent needs analysis and comprehensive learning solutions.
-            </Typography>
-          </Box>
+              <Typography variant="body1" sx={{ color: '#7a8a8b', lineHeight: 1.8, maxWidth: '320px' }}>
+                The world's first AI-native learning ecosystem. Orchestrating the future of how humanity learns, grows, and innovates.
+              </Typography>
+            </motion.div>
+          </Grid>
 
-          {/* Features */}
-          <Box>
-            <SectionTitle variant="h6">Features</SectionTitle>
+          <Grid size={{ xs: 6, sm: 3, md: 2 }}>
+            <SectionTitle>Ecosystem</SectionTitle>
             <FooterLink href="/polaris">Polaris</FooterLink>
             <FooterLink href="/constellation">Constellation</FooterLink>
             <FooterLink href="/nova">Nova</FooterLink>
             <FooterLink href="/orbit">Orbit</FooterLink>
             <FooterLink href="/spectrum">Spectrum</FooterLink>
-          </Box>
+          </Grid>
 
-          {/* Resources */}
-          <Box>
-            <SectionTitle variant="h6">Resources</SectionTitle>
+          <Grid size={{ xs: 6, sm: 3, md: 2 }}>
+            <SectionTitle>Resources</SectionTitle>
             <FooterLink href="/">Home</FooterLink>
             <FooterLink href="https://smartslate.io">Smartslate Main</FooterLink>
-            <FooterLink href="https://smartslate.io/difference">About Us</FooterLink>
-          </Box>
+            <FooterLink href="https://smartslate.io/difference">Our Mission</FooterLink>
+            <FooterLink href="https://smartslate.io/blog">Learning Lab</FooterLink>
+          </Grid>
 
-          {/* Company */}
-          <Box>
-            <SectionTitle variant="h6">Company</SectionTitle>
+          <Grid size={{ xs: 6, sm: 3, md: 2 }}>
+            <SectionTitle>Company</SectionTitle>
             <FooterLink href="https://smartslate.io/careers">Careers</FooterLink>
             <FooterLink href="https://smartslate.io/contact">Contact</FooterLink>
             <FooterLink href="https://smartslate.io/partner">Partners</FooterLink>
-          </Box>
+            <FooterLink href="https://smartslate.io/press">Press Kit</FooterLink>
+          </Grid>
 
-          {/* Legal */}
-          <Box>
-            <SectionTitle variant="h6">Legal</SectionTitle>
-            <FooterLink href="https://smartslate.io/legal/privacy">Privacy Policy</FooterLink>
-            <FooterLink href="https://smartslate.io/legal/terms">Terms of Service</FooterLink>
-            <FooterLink href="https://smartslate.io/cookies">Cookie Policy</FooterLink>
-          </Box>
-        </Box>
+          <Grid size={{ xs: 6, sm: 3, md: 2 }}>
+            <SectionTitle>Legal</SectionTitle>
+            <FooterLink href="https://smartslate.io/legal/privacy">Privacy</FooterLink>
+            <FooterLink href="https://smartslate.io/legal/terms">Terms</FooterLink>
+            <FooterLink href="https://smartslate.io/cookies">Cookies</FooterLink>
+            <FooterLink href="https://smartslate.io/security">Security</FooterLink>
+          </Grid>
+        </Grid>
 
-        {/* Copyright */}
-        <Box sx={{
-          mt: 6,
-          pt: 3,
-          borderTop: `1px solid ${theme.palette.divider}`,
-          display: 'flex',
-          flexDirection: { xs: 'column', sm: 'row' },
+        <Divider sx={{ my: 6, borderColor: 'rgba(255,255,255,0.05)' }} />
+
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: { xs: 'column', sm: 'row' }, 
+          justifyContent: 'space-between', 
           alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 2,
-          textAlign: { xs: 'center', sm: 'left' }
+          gap: 2
         }}>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" sx={{ color: '#4a5a5b' }}>
             © {currentYear} Smartslate. All rights reserved.
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Made with ❤️ for better education
-          </Typography>
+          <Box sx={{ display: 'flex', gap: 4 }}>
+            <Typography variant="body2" sx={{ color: '#4a5a5b' }}>
+              Built for the Future of Learning
+            </Typography>
+          </Box>
         </Box>
-      </FooterContent>
-    </FooterWrapper>
+      </Container>
+    </Box>
   );
 }
