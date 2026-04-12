@@ -29,14 +29,14 @@ export function useOptimizedAnimations(options: UseOptimizedAnimationsOptions = 
 
   /**
    * Premium Entrance Reveal
-   * Uses autoAlpha for robust visibility management.
+   * Uses direct fromTo for absolute stability and bypasses potential CSS conflicts.
    */
   const useWorldClassEntrance = (scope: React.RefObject<any>, selector: string = '.reveal-item') => {
     useGSAP(() => {
       if (!scope.current) return;
 
       if (shouldOptimize) {
-        gsap.set(`${selector}, .visual-reveal`, { autoAlpha: 1, y: 0, scale: 1, visibility: 'visible' });
+        gsap.set(`${selector}, .visual-reveal`, { autoAlpha: 1, y: 0, scale: 1, visibility: 'visible', opacity: 1 });
         return;
       }
 
@@ -44,32 +44,37 @@ export function useOptimizedAnimations(options: UseOptimizedAnimationsOptions = 
       const visuals = gsap.utils.toArray('.visual-reveal', scope.current);
 
       const tl = gsap.timeline({ 
-        defaults: { ease: 'expo.out' },
-        delay: 0.2 // Small delay to ensure hydration is stable
+        defaults: { ease: 'power4.out' },
+        delay: 0.1
       });
 
       if (items.length > 0) {
-        gsap.set(items, { y: 40, autoAlpha: 0, filter: 'blur(10px)' });
-        tl.to(items, {
-          autoAlpha: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          duration: 1.5,
-          stagger: 0.1,
-          clearProps: 'opacity,visibility,transform,filter'
-        });
+        tl.fromTo(items, 
+          { y: 40, autoAlpha: 0, filter: 'blur(10px)' },
+          { 
+            autoAlpha: 1, 
+            y: 0, 
+            filter: 'blur(0px)', 
+            duration: 1.2, 
+            stagger: 0.08,
+            overwrite: 'auto'
+          }
+        );
       }
 
       if (visuals.length > 0) {
-        gsap.set(visuals, { autoAlpha: 0, scale: 0.8, rotate: -5 });
-        tl.to(visuals, {
-          autoAlpha: 1,
-          scale: 1,
-          rotate: 0,
-          duration: 2,
-          ease: 'power4.out',
-          clearProps: 'opacity,visibility,transform'
-        }, items.length > 0 ? '-=1.2' : 0);
+        tl.fromTo(visuals,
+          { autoAlpha: 0, scale: 0.9, rotate: -2 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            rotate: 0,
+            duration: 1.8,
+            ease: 'expo.out',
+            overwrite: 'auto'
+          },
+          items.length > 0 ? '-=1.0' : 0
+        );
       }
     }, { scope });
   };

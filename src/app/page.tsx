@@ -75,7 +75,7 @@ const modules = [
 
 export default function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress, revealVariants, useWorldClassEntrance } = useOptimizedAnimations();
+  const { scrollYProgress, useWorldClassEntrance } = useOptimizedAnimations();
 
   // Premium Entrance Reveal
   useWorldClassEntrance(containerRef, '.reveal-item');
@@ -169,12 +169,9 @@ export default function HomePage() {
             {modules.map((module, index) => (
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={module.id}>
                 <ModuleCard
+                  className="reveal-item"
                   accentColor={module.accentColor}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.2 }}
-                  variants={revealVariants}
-                  transition={{ delay: index * 0.1 }}
+                  onClick={() => setExpandedModule(expandedModule === module.id ? null : module.id)}
                 >
                   <Box sx={{ width: 80, height: 80, borderRadius: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: `${module.accentColor}20`, border: `1px solid ${module.accentColor}30`, mb: 4 }}>
                     <module.icon size={40} color={module.accentColor} />

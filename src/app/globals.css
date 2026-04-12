@@ -471,10 +471,16 @@ a:focus-visible,
 }
 
 /* Animation Starting States - World Class Stability */
-.reveal-item, .visual-reveal, .hero-reveal, .polaris-reveal, .nova-reveal, .constellation-reveal, .orbit-reveal, .spectrum-reveal {
+.reveal-item, .visual-reveal {
   opacity: 0;
   visibility: hidden;
   will-change: transform, opacity, filter;
+}
+
+/* Ensure visuals don't collapse during entrance */
+.visual-reveal {
+  display: block;
+  min-height: 100px;
 }
 
 /* CTA Button Utilities */
