@@ -15,8 +15,6 @@ import {
   BarChart3, 
   Users, 
   Globe, 
-  Award,
-  ArrowRight
 } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -79,9 +77,11 @@ const CoverSlide = () => {
   const container = useRef<HTMLDivElement>(null);
   
   useGSAP(() => {
-    gsap.from('.invest-reveal', {
-      y: 30,
-      opacity: 0,
+    const targets = gsap.utils.toArray('.invest-reveal', container.current);
+    gsap.set(targets, { opacity: 0, y: 30 });
+    gsap.to(targets, {
+      opacity: 1,
+      y: 0,
       duration: 1,
       stagger: 0.1,
       ease: 'power3.out',

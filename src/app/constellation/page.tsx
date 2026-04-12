@@ -13,7 +13,6 @@ import {
   FileText,
   Layers,
   Shield,
-  ArrowRight,
   Sparkles
 } from 'lucide-react';
 import { useOptimizedAnimations } from '@/hooks/useOptimizedAnimations';
@@ -52,11 +51,11 @@ const FeatureCard = styled(motion.div)(() => ({
 
 export default function ConstellationPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress, revealVariants, getAnimationProps, useWorldClassEntrance } = useOptimizedAnimations();
+  const { getAnimationProps, useWorldClassEntrance, scrollYProgress } = useOptimizedAnimations();
   const rotate = useTransform(scrollYProgress, [0, 1], [0, -60]);
 
-  // Premium Entrance
-  useWorldClassEntrance(containerRef, '.constellation-reveal');
+  // Premium Entrance Reveal
+  useWorldClassEntrance(containerRef, '.reveal-item');
 
   const stats = [
     { icon: Zap, value: '90%', label: 'Time Reduction' },
@@ -79,31 +78,31 @@ export default function ConstellationPage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="constellation-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Chip 
                   icon={<Sparkles size={14} />}
                   label="COMING EARLY 2026" 
                   sx={{ mb: 4, bgcolor: 'rgba(124, 105, 245, 0.1)', color: constellationColors.primary, fontWeight: 800, px: 1 }} 
                 />
               </Box>
-              <Box className="constellation-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
                   The Bridge to <span style={{ color: constellationColors.primary }}>Implementation.</span>
                 </Typography>
               </Box>
-              <Box className="constellation-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 650 }}>
                   Constellation transforms strategic blueprints into detailed course architecture. From scripts to storyboards, bridge the gap between plan and reality.
                 </Typography>
               </Box>
-              <Box className="constellation-reveal" sx={{ display: 'flex', gap: 3, opacity: 0 }}>
+              <Box className="reveal-item" sx={{ display: 'flex', gap: 3 }}>
                 <MagneticButton variant="contained" sx={{ bgcolor: constellationColors.primary }}>Know More</MagneticButton>
                 <Button variant="text" sx={{ color: constellationColors.primary, fontWeight: 700 }}>Integration Guide</Button>
               </Box>
             </Grid>
 
             <Grid size={{ xs: 12, md: 5 }} sx={{ display: { xs: 'none', md: 'block' } }}>
-              <Box className="visual-reveal" sx={{ opacity: 0 }}>
+              <Box className="visual-reveal">
                 <motion.div style={{ rotate }}>
                   <Box sx={{ 
                     width: 450, 

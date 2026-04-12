@@ -8,31 +8,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Compass,
-  AlertTriangle,
-  DollarSign,
-  Clock,
-  Users,
-  Sparkles,
   CheckCircle2,
-  TrendingUp,
-  Zap,
-  Target,
-  Award,
-  BarChart3,
-  ArrowRight,
-  FileText,
-  MessageSquare,
-  Shield,
-  ExternalLink,
-  ArrowDown,
-  Plus,
-  Minus,
-  Image as ImageIcon,
-  Layout,
-  Database,
-  GitBranch,
-  Settings,
-  Download,
 } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -51,23 +27,6 @@ const brandColors = {
     disabled: '#7a8a8b',
   },
 };
-
-// Animations
-const pulse = keyframes`
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(0.98); }
-`;
-
-const float = keyframes`
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-`;
-
-const gradientShift = keyframes`
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-`;
 
 // Styled Components
 const SlideContainer = styled(Box)(() => ({
@@ -130,25 +89,6 @@ const NavButton = styled(IconButton)(() => ({
   },
 }));
 
-const AnimatedMetric = styled(motion.div)(() => ({
-  textAlign: 'left',
-  padding: '32px',
-  borderRadius: '20px',
-  background: `linear-gradient(135deg, ${brandColors.primary}15, ${brandColors.primaryLight}10)`,
-  border: `2px solid ${brandColors.primary}30`,
-  position: 'relative',
-  overflow: 'hidden',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: '4px',
-    background: `linear-gradient(90deg, ${brandColors.primary}, ${brandColors.primaryLight})`,
-  },
-}));
-
 const IconCircle = styled(Box)(() => ({
   width: '80px',
   height: '80px',
@@ -171,103 +111,17 @@ const BrandText = styled('span')(() => ({
   fontWeight: 900,
 }));
 
-const PrimaryButton = styled(Button)(() => ({
-  padding: '16px 40px',
-  fontSize: '1.1rem',
-  fontWeight: 700,
-  borderRadius: '14px',
-  textTransform: 'none',
-  background: brandColors.primary,
-  color: '#020C1B',
-  boxShadow: `0 10px 30px ${brandColors.primary}50`,
-  transition: 'all 0.3s ease',
-  '&:hover': {
-    transform: 'translateY(-3px)',
-    background: brandColors.primaryLight,
-    boxShadow: `0 15px 40px ${brandColors.primary}60`,
-  },
-}));
-
-const ComparisonCard = styled(motion.div)<{ variant?: 'bad' | 'good' }>(({ variant }) => ({
-  padding: '32px',
-  borderRadius: '20px',
-  background: variant === 'bad'
-    ? 'rgba(239, 68, 68, 0.1)'
-    : `linear-gradient(135deg, ${brandColors.primary}15, ${brandColors.primaryLight}10)`,
-  border: variant === 'bad'
-    ? '2px solid rgba(239, 68, 68, 0.3)'
-    : `2px solid ${brandColors.primary}40`,
-  height: '100%',
-  position: 'relative',
-  overflow: 'hidden',
-}));
-
-const ProgressBar = styled(Box)<{ value: number }>(({ value }) => ({
-  width: '100%',
-  height: '12px',
-  borderRadius: '6px',
-  background: `${brandColors.primary}20`,
-  position: 'relative',
-  overflow: 'hidden',
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    height: '100%',
-    width: `${value}%`,
-    background: `linear-gradient(90deg, ${brandColors.primary}, ${brandColors.primaryLight})`,
-    borderRadius: '6px',
-    transition: 'width 1s ease-out',
-  },
-}));
-
-interface AnimatedCounterProps {
-  value: number;
-  suffix?: string;
-  prefix?: string;
-  duration?: number;
-}
-
-const AnimatedCounter: React.FC<AnimatedCounterProps> = ({ value, suffix = '', prefix = '', duration = 2000 }) => {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    let startTime: number;
-    let animationFrame: number;
-
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-
-      setCount(Math.floor(progress * value));
-
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
-      }
-    };
-
-    animationFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [value, duration]);
-
-  return (
-    <span>
-      {prefix}{count.toLocaleString()}{suffix}
-    </span>
-  );
-};
-
 export default function SalesPresentation() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
   const presentationContainer = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    const targets = gsap.utils.toArray('.sales-reveal');
-    gsap.from(targets, {
-      y: 30,
-      opacity: 0,
+    const targets = gsap.utils.toArray('.sales-reveal', presentationContainer.current);
+    gsap.set(targets, { opacity: 0, y: 30 });
+    gsap.to(targets, {
+      opacity: 1,
+      y: 0,
       duration: 1,
       stagger: 0.1,
       ease: 'power3.out',
@@ -327,7 +181,6 @@ export default function SalesPresentation() {
         </Box>
       ),
     },
-    // More slides could be added here following the same sales-reveal pattern
   ];
 
   const nextSlide = useCallback(() => {

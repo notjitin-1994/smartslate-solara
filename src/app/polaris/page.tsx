@@ -11,9 +11,6 @@ import {
   Target,
   CheckCircle2,
   Clock,
-  Sparkles,
-  Server,
-  FileText
 } from 'lucide-react';
 import { useOptimizedAnimations } from '@/hooks/useOptimizedAnimations';
 import { MagneticButton } from '@/components/animations/MagneticButton';
@@ -35,28 +32,13 @@ const HeroSection = styled(Box)(() => ({
   background: 'radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.05) 0%, #020C1B 100%)',
 }));
 
-const FeatureCard = styled(motion.div)(() => ({
-  background: 'rgba(13, 27, 42, 0.4)',
-  backdropFilter: 'blur(30px)',
-  border: '1px solid rgba(6, 182, 212, 0.1)',
-  borderRadius: '32px',
-  padding: '40px',
-  height: '100%',
-  transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-  '&:hover': {
-    transform: 'translateY(-12px)',
-    border: `1px solid ${polarisColors.primary}50`,
-    boxShadow: `0 30px 60px ${polarisColors.primary}20`,
-  },
-}));
-
 export default function PolarisPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress, revealVariants, useWorldClassEntrance, getAnimationProps } = useOptimizedAnimations();
+  const { scrollYProgress, useWorldClassEntrance } = useOptimizedAnimations();
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 90]);
 
-  // Premium Entrance
-  useWorldClassEntrance(containerRef, '.polaris-reveal');
+  // Premium Entrance Reveal
+  useWorldClassEntrance(containerRef, '.reveal-item');
 
   const stats = [
     { icon: Zap, value: '15x', label: 'Faster Requirements' },
@@ -73,27 +55,27 @@ export default function PolarisPage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="polaris-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Chip label="NOW IN PUBLIC BETA" sx={{ mb: 4, bgcolor: 'rgba(6, 182, 212, 0.1)', color: polarisColors.primary, fontWeight: 800 }} />
               </Box>
-              <Box className="polaris-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
                   The North Star of <span style={{ color: polarisColors.primary }}>Learning Design.</span>
                 </Typography>
               </Box>
-              <Box className="polaris-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 600 }}>
                   Polaris automates the most difficult 40% of instructional design—transforming raw requirements into rigorous blueprints in minutes.
                 </Typography>
               </Box>
-              <Box className="polaris-reveal" sx={{ display: 'flex', gap: 3, opacity: 0 }}>
+              <Box className="reveal-item" sx={{ display: 'flex', gap: 3 }}>
                 <MagneticButton variant="contained" sx={{ bgcolor: polarisColors.primary, color: '#020C1B' }}>Start Free Trial</MagneticButton>
                 <Button variant="text" sx={{ color: polarisColors.primary, fontWeight: 700 }}>Watch Demo</Button>
               </Box>
             </Grid>
 
             <Grid size={{ xs: 12, md: 5 }} sx={{ display: { xs: 'none', md: 'block' } }}>
-              <Box className="visual-reveal" sx={{ opacity: 0 }}>
+              <Box className="visual-reveal">
                 <motion.div style={{ rotate }}>
                   <Box sx={{ width: 400, height: 400, borderRadius: '50%', border: `2px dashed ${polarisColors.primary}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Box sx={{ width: 200, height: 200, borderRadius: '50%', background: `radial-gradient(circle, ${polarisColors.primary} 0%, ${polarisColors.dark} 100%)`, animation: `${starGlow} 4s infinite ease-in-out`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

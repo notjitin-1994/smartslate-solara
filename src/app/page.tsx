@@ -77,8 +77,8 @@ export default function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress, revealVariants, useWorldClassEntrance } = useOptimizedAnimations();
 
-  // Premium Entrance Timeline
-  useWorldClassEntrance(containerRef, '.hero-reveal');
+  // Premium Entrance Reveal
+  useWorldClassEntrance(containerRef, '.reveal-item');
 
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -200]);
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 90]);
@@ -94,7 +94,7 @@ export default function HomePage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="hero-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Chip
                   icon={<Sparkles size={16} />}
                   label="2026 Innovation Awards Finalist"
@@ -102,19 +102,19 @@ export default function HomePage() {
                 />
               </Box>
 
-              <Box className="hero-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Typography variant="h1" sx={{ mb: 3, fontSize: { xs: '3rem', md: '5.5rem' }, fontWeight: 900, lineHeight: 1, color: '#fff', letterSpacing: '-0.04em' }}>
                   The Future of Learning, <GradientText>Orchestrated.</GradientText>
                 </Typography>
               </Box>
 
-              <Box className="hero-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Typography variant="h5" sx={{ mb: 6, color: '#b0c5c6', lineHeight: 1.5, fontSize: '1.5rem', fontWeight: 500, maxWidth: '600px' }}>
                   Solara is the world's first unified AI-native learning ecosystem. One intelligence, six modules, total transformation.
                 </Typography>
               </Box>
 
-              <Box className="hero-reveal" sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', opacity: 0 }}>
+              <Box className="reveal-item" sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
                 <MagneticButton component={Link} href="/polaris" variant="contained" endIcon={<ArrowRight size={20} />} strength={0.2} sx={{ background: '#a7dadb', color: '#020C1B' }}>
                   Explore Polaris
                 </MagneticButton>
@@ -126,7 +126,7 @@ export default function HomePage() {
 
             {/* Interactive Visual Hub */}
             <Grid size={{ xs: 12, md: 5 }} sx={{ display: { xs: 'none', md: 'block' } }}>
-              <Box className="visual-reveal" sx={{ opacity: 0 }}>
+              <Box className="visual-reveal">
                 <motion.div style={{ y: y1, rotate: rotate }}>
                   <Box sx={{ width: 500, height: 500, borderRadius: '50%', border: '1px solid rgba(167, 218, 219, 0.15)', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     {/* Central Star */}

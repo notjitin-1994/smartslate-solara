@@ -8,16 +8,8 @@ import {
   Sparkles,
   Rocket,
   Zap,
-  CheckCircle2,
-  ArrowRight,
   Brain,
-  Edit3,
-  Eye,
-  Download,
   Clock,
-  Award,
-  Shield,
-  Users
 } from 'lucide-react';
 import { useOptimizedAnimations } from '@/hooks/useOptimizedAnimations';
 import { MagneticButton } from '@/components/animations/MagneticButton';
@@ -55,10 +47,10 @@ const FeatureCard = styled(motion.div)(() => ({
 
 export default function NovaPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { getStaggerProps, revealVariants, getAnimationProps, useWorldClassEntrance } = useOptimizedAnimations();
+  const { getAnimationProps, useWorldClassEntrance } = useOptimizedAnimations();
 
-  // Premium Entrance
-  useWorldClassEntrance(containerRef, '.nova-reveal');
+  // Premium Entrance Reveal
+  useWorldClassEntrance(containerRef, '.reveal-item');
 
   const features = [
     { icon: Brain, title: 'Pedagogical AI', desc: 'Content that isn\'t just text—it\'s structured for maximum retention and engagement.' },
@@ -74,31 +66,31 @@ export default function NovaPage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="nova-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Chip 
                   icon={<Clock size={14} />}
                   label="COMING Q3 2026" 
                   sx={{ mb: 4, bgcolor: 'rgba(34, 197, 94, 0.1)', color: novaColors.primary, fontWeight: 800, px: 1 }} 
                 />
               </Box>
-              <Box className="nova-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
                   Content Creation, <span style={{ color: novaColors.primary }}>Supernova Speed.</span>
                 </Typography>
               </Box>
-              <Box className="nova-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 650 }}>
                   Nova is the world's first AI co-author that understands learning science. Transform raw ideas into pedagogically sound content instantly.
                 </Typography>
               </Box>
-              <Box className="nova-reveal" sx={{ display: 'flex', gap: 3, opacity: 0 }}>
+              <Box className="reveal-item" sx={{ display: 'flex', gap: 3 }}>
                 <MagneticButton variant="contained" sx={{ bgcolor: novaColors.primary }}>Join Waitlist</MagneticButton>
                 <Button variant="text" sx={{ color: novaColors.primary, fontWeight: 700 }}>Request Early Access</Button>
               </Box>
             </Grid>
 
             <Grid size={{ xs: 12, md: 5 }}>
-              <Box className="visual-reveal" sx={{ opacity: 0 }}>
+              <Box className="visual-reveal">
                 <Box sx={{ 
                   p: 4, 
                   bgcolor: 'rgba(13, 27, 42, 0.6)', 

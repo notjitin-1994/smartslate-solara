@@ -7,14 +7,11 @@ import { useRef } from 'react';
 import {
   BarChart3,
   Brain,
-  Zap,
-  Target,
-  Clock,
-  Shield,
   TrendingUp,
-  ArrowRight,
   Database,
-  Gauge
+  Clock,
+  Gauge,
+  Shield,
 } from 'lucide-react';
 import { useOptimizedAnimations } from '@/hooks/useOptimizedAnimations';
 import { MagneticButton } from '@/components/animations/MagneticButton';
@@ -52,11 +49,11 @@ const FeatureCard = styled(motion.div)(() => ({
 
 export default function SpectrumPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { getStaggerProps, revealVariants, scrollYProgress, getAnimationProps, useWorldClassEntrance } = useOptimizedAnimations();
+  const { getAnimationProps, useWorldClassEntrance, scrollYProgress } = useOptimizedAnimations();
   const yParallax = useTransform(scrollYProgress, [0, 1], [0, -150]);
 
-  // Premium Entrance
-  useWorldClassEntrance(containerRef, '.spectrum-reveal');
+  // Premium Entrance Reveal
+  useWorldClassEntrance(containerRef, '.reveal-item');
 
   const stats = [
     { icon: Brain, value: '94%', label: 'Prediction Rate' },
@@ -79,31 +76,31 @@ export default function SpectrumPage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="spectrum-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Chip 
                   icon={<BarChart3 size={14} />}
                   label="COMING IN 2027" 
                   sx={{ mb: 4, bgcolor: 'rgba(139, 92, 246, 0.1)', color: spectrumColors.primary, fontWeight: 800, px: 1 }} 
                 />
               </Box>
-              <Box className="spectrum-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
                   Intelligence in <span style={{ color: spectrumColors.primary }}>High Definition.</span>
                 </Typography>
               </Box>
-              <Box className="spectrum-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 650 }}>
                   Spectrum is the final frontier of learning analytics. Real-time predictive intelligence that proves the ROI of every learning moment.
                 </Typography>
               </Box>
-              <Box className="spectrum-reveal" sx={{ display: 'flex', gap: 3, opacity: 0 }}>
+              <Box className="reveal-item" sx={{ display: 'flex', gap: 3 }}>
                 <MagneticButton variant="contained" sx={{ bgcolor: spectrumColors.primary }}>Get Briefing</MagneticButton>
                 <Button variant="text" sx={{ color: spectrumColors.primary, fontWeight: 700 }}>Data Roadmap</Button>
               </Box>
             </Grid>
 
             <Grid size={{ xs: 12, md: 5 }} sx={{ display: { xs: 'none', md: 'block' } }}>
-              <Box className="visual-reveal" sx={{ opacity: 0 }}>
+              <Box className="visual-reveal">
                 <motion.div style={{ y: yParallax }}>
                   <Box sx={{ 
                     p: 4, 
@@ -159,7 +156,31 @@ export default function SpectrumPage() {
         </Container>
       </Box>
 
-      {/* Final CTA */}
+      <Box sx={{ py: 15, bgcolor: 'rgba(139, 92, 246, 0.02)' }}>
+        <Container maxWidth="lg">
+          <Box sx={{ mb: 10, textAlign: 'center' }}>
+            <Typography variant="h2" sx={{ fontWeight: 900, mb: 3 }}>Predictive Intelligence.</Typography>
+            <Typography variant="h6" sx={{ color: '#b0c5c6', maxWidth: 700, mx: 'auto' }}>
+              Spectrum turns dark data into clear, actionable strategies for growth and optimization.
+            </Typography>
+          </Box>
+
+          <Grid container spacing={4}>
+            {features.map((f, i) => (
+              <Grid size={{ xs: 12, md: 4 }} key={i}>
+                <FeatureCard {...getAnimationProps({ transition: { delay: i * 0.1 } })}>
+                  <Box sx={{ width: 64, height: 64, bgcolor: `${spectrumColors.primary}20`, borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}>
+                    <f.icon size={32} color={spectrumColors.primary} />
+                  </Box>
+                  <Typography variant="h4" sx={{ fontWeight: 800, mb: 2 }}>{f.title}</Typography>
+                  <Typography variant="body1" sx={{ color: '#b0c5c6', lineHeight: 1.7 }}>{f.desc}</Typography>
+                </FeatureCard>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
+
       <Box sx={{ py: 20, textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <FloatingOrb size="600px" color={spectrumColors.primary} x="40%" y="10%" delay={0} duration={20} opacity={0.1} />
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>

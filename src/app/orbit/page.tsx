@@ -51,11 +51,11 @@ const FeatureCard = styled(motion.div)(() => ({
 
 export default function OrbitPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { getStaggerProps, revealVariants, scrollYProgress, getAnimationProps, useWorldClassEntrance } = useOptimizedAnimations();
+  const { getAnimationProps, useWorldClassEntrance, scrollYProgress } = useOptimizedAnimations();
   const orbitRotate = useTransform(scrollYProgress, [0, 1], [0, 120]);
 
-  // Premium Entrance
-  useWorldClassEntrance(containerRef, '.orbit-reveal');
+  // Premium Entrance Reveal
+  useWorldClassEntrance(containerRef, '.reveal-item');
 
   const stats = [
     { icon: TrendingUp, value: '3x', label: 'Completion Rates' },
@@ -79,31 +79,31 @@ export default function OrbitPage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="orbit-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Chip 
                   icon={<OrbitIcon size={14} />}
                   label="COMING IN 2026" 
                   sx={{ mb: 4, bgcolor: 'rgba(245, 158, 11, 0.1)', color: orbitColors.primary, fontWeight: 800, px: 1 }} 
                 />
               </Box>
-              <Box className="orbit-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
                   Learning in <span style={{ color: orbitColors.primary }}>Constant Flow.</span>
                 </Typography>
               </Box>
-              <Box className="orbit-reveal" sx={{ opacity: 0 }}>
+              <Box className="reveal-item">
                 <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 650 }}>
                   Orbit is the world's most advanced learning delivery system. One platform, millions of personalized trajectories.
                 </Typography>
               </Box>
-              <Box className="orbit-reveal" sx={{ display: 'flex', gap: 3, opacity: 0 }}>
+              <Box className="reveal-item" sx={{ display: 'flex', gap: 3 }}>
                 <MagneticButton variant="contained" sx={{ bgcolor: orbitColors.primary }}>Join the Mission</MagneticButton>
                 <Button variant="text" sx={{ color: orbitColors.primary, fontWeight: 700 }}>Platform Specs</Button>
               </Box>
             </Grid>
 
             <Grid size={{ xs: 12, md: 5 }} sx={{ display: { xs: 'none', md: 'block' } }}>
-              <Box className="visual-reveal" sx={{ opacity: 0 }}>
+              <Box className="visual-reveal">
                 <motion.div style={{ rotate: orbitRotate }}>
                   <Box sx={{ 
                     width: 450, 
@@ -151,7 +151,31 @@ export default function OrbitPage() {
         </Container>
       </Box>
 
-      {/* Final CTA */}
+      <Box sx={{ py: 15, bgcolor: 'rgba(245, 158, 11, 0.02)' }}>
+        <Container maxWidth="lg">
+          <Box sx={{ mb: 10, textAlign: 'center' }}>
+            <Typography variant="h2" sx={{ fontWeight: 900, mb: 3 }}>Frictionless Delivery.</Typography>
+            <Typography variant="h6" sx={{ color: '#b0c5c6', maxWidth: 700, mx: 'auto' }}>
+              Orbit eliminates the gap between knowing and doing through contextual, adaptive learning experiences.
+            </Typography>
+          </Box>
+
+          <Grid container spacing={4}>
+            {features.map((f, i) => (
+              <Grid size={{ xs: 12, md: 4 }} key={i}>
+                <FeatureCard {...getAnimationProps({ transition: { delay: i * 0.1 } })}>
+                  <Box sx={{ width: 64, height: 64, bgcolor: `${orbitColors.primary}20`, borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}>
+                    <f.icon size={32} color={orbitColors.primary} />
+                  </Box>
+                  <Typography variant="h4" sx={{ fontWeight: 800, mb: 2 }}>{f.title}</Typography>
+                  <Typography variant="body1" sx={{ color: '#b0c5c6', lineHeight: 1.7 }}>{f.desc}</Typography>
+                </FeatureCard>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
+
       <Box sx={{ py: 20, textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <FloatingOrb size="600px" color={orbitColors.primary} x="60%" y="10%" delay={0} duration={20} opacity={0.1} />
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
