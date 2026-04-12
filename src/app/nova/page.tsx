@@ -74,7 +74,21 @@ export default function NovaPage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <motion.div {...getStaggerProps(0.15)}>
+              <motion.div 
+                initial="hidden" 
+                whileInView="visible" 
+                viewport={{ once: true, amount: 0.1 }}
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.1,
+                      delayChildren: 0.2
+                    }
+                  }
+                }}
+              >
                 <motion.div variants={revealVariants}>
                   <Chip 
                     icon={<Clock size={14} />}

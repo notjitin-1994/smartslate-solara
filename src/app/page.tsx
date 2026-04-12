@@ -260,7 +260,21 @@ export default function HomePage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, py: { xs: 8, md: 15 } }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <motion.div {...getStaggerProps(0.15)}>
+              <motion.div 
+                initial="hidden" 
+                whileInView="visible" 
+                viewport={{ once: true, amount: 0.1 }}
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.1,
+                      delayChildren: 0.2
+                    }
+                  }
+                }}
+              >
                 <motion.div variants={revealVariants}>
                   <Chip
                     icon={<Sparkles size={16} />}
@@ -458,11 +472,10 @@ export default function HomePage() {
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={module.id}>
                 <ModuleCard
                   accentColor={module.accentColor}
-                  {...getAnimationProps({
-                    initial: { opacity: 0, scale: 0.9, y: 40 },
-                    whileInView: { opacity: 1, scale: 1, y: 0 },
-                    transition: { delay: index * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }
-                  })}
+                  initial={{ opacity: 0, scale: 0.9, y: 40 }}
+                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ delay: index * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   onClick={() => setExpandedModule(expandedModule === module.id ? null : module.id)}
                 >
                   <IconContainer accentColor={module.accentColor}>

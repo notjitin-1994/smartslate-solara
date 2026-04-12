@@ -108,6 +108,7 @@ export default function Header() {
   return (
     <>
       <HeaderWrapper
+        initial={{ y: -100, x: '-50%', opacity: 0 }}
         animate={{ 
           y: hide ? -100 : 0,
           x: '-50%',

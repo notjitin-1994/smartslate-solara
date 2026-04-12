@@ -99,21 +99,21 @@ export function useOptimizedAnimations(options: UseOptimizedAnimationsOptions = 
 
   /**
    * Utility for staggered child animations
+   * Fixed: Added explicit transition properties to the visible variant
    */
   const getStaggerProps = useCallback((staggerDelay: number = 0.1) => {
-    if (shouldOptimize) return {};
+    if (shouldOptimize) return { initial: "visible", animate: "visible" };
 
     return {
       initial: "hidden",
-      whileInView: "visible",
-      viewport: { once: true },
+      animate: "visible",
       variants: {
         hidden: { opacity: 0 },
         visible: {
           opacity: 1,
           transition: {
             staggerChildren: staggerDelay,
-            delayChildren: 0.2
+            delayChildren: 0.1
           }
         }
       }
@@ -122,13 +122,13 @@ export function useOptimizedAnimations(options: UseOptimizedAnimationsOptions = 
 
   /**
    * High-end reveal variant
+   * Fixed: Simplified to ensure reliable trigger
    */
   const revealVariants = {
-    hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      filter: 'blur(0px)',
       transition: {
         duration: 0.8,
         ease: [0.16, 1, 0.3, 1]

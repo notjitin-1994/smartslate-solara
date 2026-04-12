@@ -227,7 +227,7 @@ const SubSlideIndicator = ({ total, current }: { total: number; current: number 
 // Slide components
 const CoverSlide = () => (
   <Box sx={{ textAlign: 'center', maxWidth: '85%', width: '100%' }}>
-    <motion.div {...fadeInUp}>
+    <motion.div initial="initial" animate="animate">
       <Chip
         label="INVESTOR PITCH DECK"
         sx={{
@@ -241,7 +241,7 @@ const CoverSlide = () => (
         }}
       />
     </motion.div>
-    <motion.div {...fadeInUp} transition={{ delay: 0.1 }}>
+    <motion.div initial="initial" animate="animate" transition={{ delay: 0.1 }}>
       <Typography
         variant="h1"
         sx={{
@@ -256,7 +256,7 @@ const CoverSlide = () => (
         SMARTSLATE <GradientText>SOLARA</GradientText>
       </Typography>
     </motion.div>
-    <motion.div {...fadeInUp} transition={{ delay: 0.2 }}>
+    <motion.div initial="initial" animate="animate" transition={{ delay: 0.2 }}>
       <Typography
         variant="h4"
         sx={{
@@ -270,7 +270,7 @@ const CoverSlide = () => (
         The Future of Corporate Learning Technology
       </Typography>
     </motion.div>
-    <motion.div {...fadeInUp} transition={{ delay: 0.3 }}>
+    <motion.div initial="initial" animate="animate" transition={{ delay: 0.3 }}>
       <Typography
         variant="h6"
         sx={{
@@ -285,7 +285,7 @@ const CoverSlide = () => (
         An <HighlightText>AI-native</HighlightText>, unified learning platform replacing fragmented tool ecosystems
       </Typography>
     </motion.div>
-    <motion.div {...fadeInUp} transition={{ delay: 0.4 }}>
+    <motion.div initial="initial" animate="animate" transition={{ delay: 0.4 }}>
       <Grid container spacing={2} justifyContent="center" sx={{ maxWidth: '90%', mx: 'auto' }}>
         {[
           { icon: <TrendingUp size={20} />, label: 'Series A Raise', value: '$15-20M' },
