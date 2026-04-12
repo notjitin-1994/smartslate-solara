@@ -4,7 +4,7 @@ import { Box, Container, Typography, Button, Grid, Chip } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
 import { motion, AnimatePresence, useTransform } from 'framer-motion';
 import Link from 'next/link';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import {
@@ -80,18 +80,14 @@ export default function HomePage() {
   const { scrollYProgress, revealVariants } = useOptimizedAnimations();
 
   useGSAP(() => {
-    // Force immediate visibility if GSAP fails for some reason
-    const targets = gsap.utils.toArray('.hero-reveal');
-    
-    gsap.set(targets, { opacity: 0, y: 30 });
-    
-    gsap.to(targets, {
-      y: 0,
-      opacity: 1,
+    // Standard robust GSAP reveal
+    gsap.from('.hero-reveal', {
+      y: 30,
+      opacity: 0,
       duration: 1,
       stagger: 0.1,
       ease: 'power3.out',
-      clearProps: 'all' // Crucial: removes GSAP-added styles after completion
+      clearProps: 'all'
     });
 
     gsap.from('.orbit-visual', {
@@ -117,7 +113,7 @@ export default function HomePage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="hero-reveal" sx={{ opacity: 0 }}>
+              <Box className="hero-reveal">
                 <Chip
                   icon={<Sparkles size={16} />}
                   label="2026 Innovation Awards Finalist"
@@ -125,19 +121,19 @@ export default function HomePage() {
                 />
               </Box>
 
-              <Box className="hero-reveal" sx={{ opacity: 0 }}>
+              <Box className="hero-reveal">
                 <Typography variant="h1" sx={{ mb: 3, fontSize: { xs: '3rem', md: '5.5rem' }, fontWeight: 900, lineHeight: 1, color: '#fff', letterSpacing: '-0.04em' }}>
                   The Future of Learning, <GradientText>Orchestrated.</GradientText>
                 </Typography>
               </Box>
 
-              <Box className="hero-reveal" sx={{ opacity: 0 }}>
+              <Box className="hero-reveal">
                 <Typography variant="h5" sx={{ mb: 6, color: '#b0c5c6', lineHeight: 1.5, fontSize: '1.5rem', fontWeight: 500, maxWidth: '600px' }}>
                   Solara is the world's first unified AI-native learning ecosystem. One intelligence, six modules, total transformation.
                 </Typography>
               </Box>
 
-              <Box className="hero-reveal" sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', opacity: 0 }}>
+              <Box className="hero-reveal" sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
                 <MagneticButton component={Link} href="/polaris" variant="contained" endIcon={<ArrowRight size={20} />} strength={0.2} sx={{ background: '#a7dadb', color: '#020C1B' }}>
                   Explore Polaris
                 </MagneticButton>

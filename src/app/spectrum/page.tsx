@@ -59,11 +59,9 @@ export default function SpectrumPage() {
 
   useGSAP(() => {
     const targets = gsap.utils.toArray('.spectrum-reveal');
-    gsap.set(targets, { opacity: 0, y: 30 });
-    
-    gsap.to(targets, {
-      y: 0,
-      opacity: 1,
+    gsap.from(targets, {
+      y: 30,
+      opacity: 0,
       duration: 1,
       stagger: 0.1,
       ease: 'power3.out',
@@ -78,6 +76,12 @@ export default function SpectrumPage() {
     { icon: Clock, value: '<5min', label: 'Latency' },
   ];
 
+  const features = [
+    { icon: Gauge, title: 'Impact Correlation', desc: 'Directly link learning engagement to business KPIs and revenue growth.' },
+    { icon: Brain, title: 'Predictive Insights', desc: 'Identify skill gaps and learner drop-off risks before they happen.' },
+    { icon: Shield, title: 'Enterprise BI', desc: 'Military-grade encryption for your organization\'s most sensitive data.' },
+  ];
+
   return (
     <Box ref={containerRef} sx={{ background: '#020C1B', color: '#fff' }}>
       <HeroSection>
@@ -86,24 +90,24 @@ export default function SpectrumPage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="spectrum-reveal" sx={{ opacity: 0 }}>
+              <Box className="spectrum-reveal">
                 <Chip 
                   icon={<BarChart3 size={14} />}
                   label="COMING IN 2027" 
                   sx={{ mb: 4, bgcolor: 'rgba(139, 92, 246, 0.1)', color: spectrumColors.primary, fontWeight: 800, px: 1 }} 
                 />
               </Box>
-              <Box className="spectrum-reveal" sx={{ opacity: 0 }}>
+              <Box className="spectrum-reveal">
                 <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
                   Intelligence in <span style={{ color: spectrumColors.primary }}>High Definition.</span>
                 </Typography>
               </Box>
-              <Box className="spectrum-reveal" sx={{ opacity: 0 }}>
+              <Box className="spectrum-reveal">
                 <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 650 }}>
                   Spectrum is the final frontier of learning analytics. Real-time predictive intelligence that proves the ROI of every learning moment.
                 </Typography>
               </Box>
-              <Box className="spectrum-reveal" sx={{ display: 'flex', gap: 3, opacity: 0 }}>
+              <Box className="spectrum-reveal" sx={{ display: 'flex', gap: 3 }}>
                 <MagneticButton variant="contained" sx={{ bgcolor: spectrumColors.primary }}>Get Briefing</MagneticButton>
                 <Button variant="text" sx={{ color: spectrumColors.primary, fontWeight: 700 }}>Data Roadmap</Button>
               </Box>
@@ -148,22 +152,52 @@ export default function SpectrumPage() {
         </Container>
       </HeroSection>
 
+      {/* Stats Section */}
       <Box sx={{ py: 15, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <Container maxWidth="lg">
           <Grid container spacing={4}>
             {stats.map((stat, i) => (
               <Grid size={{ xs: 12, sm: 6, md: 3 }} key={i}>
-                <Box sx={{ textAlign: 'center', p: 4, bgcolor: 'rgba(255,255,255,0.02)', borderRadius: '24px' }}>
-                  <stat.icon size={40} color={spectrumColors.primary} style={{ marginBottom: 16 }} />
-                  <Typography variant="h2" sx={{ fontWeight: 900, color: spectrumColors.primary }}>{stat.value}</Typography>
-                  <Typography variant="body2" sx={{ color: '#7a8a8b', fontWeight: 700 }}>{stat.label.toUpperCase()}</Typography>
-                </Box>
+                <motion.div {...getAnimationProps({ transition: { delay: i * 0.1 } })}>
+                  <Box sx={{ textAlign: 'center', p: 4, bgcolor: 'rgba(255,255,255,0.02)', borderRadius: '24px' }}>
+                    <stat.icon size={40} color={spectrumColors.primary} style={{ marginBottom: 16 }} />
+                    <Typography variant="h2" sx={{ fontWeight: 900, color: spectrumColors.primary }}>{stat.value}</Typography>
+                    <Typography variant="body2" sx={{ color: '#7a8a8b', fontWeight: 700 }}>{stat.label.toUpperCase()}</Typography>
+                  </Box>
+                </motion.div>
               </Grid>
             ))}
           </Grid>
         </Container>
       </Box>
 
+      {/* Features Grid */}
+      <Box sx={{ py: 15, bgcolor: 'rgba(139, 92, 246, 0.02)' }}>
+        <Container maxWidth="lg">
+          <Box sx={{ mb: 10, textAlign: 'center' }}>
+            <Typography variant="h2" sx={{ fontWeight: 900, mb: 3 }}>Predictive Intelligence.</Typography>
+            <Typography variant="h6" sx={{ color: '#b0c5c6', maxWidth: 700, mx: 'auto' }}>
+              Spectrum turns dark data into clear, actionable strategies for growth and optimization.
+            </Typography>
+          </Box>
+
+          <Grid container spacing={4}>
+            {features.map((f, i) => (
+              <Grid size={{ xs: 12, md: 4 }} key={i}>
+                <FeatureCard {...getAnimationProps({ transition: { delay: i * 0.1 } })}>
+                  <Box sx={{ width: 64, height: 64, bgcolor: `${spectrumColors.primary}20`, borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}>
+                    <f.icon size={32} color={spectrumColors.primary} />
+                  </Box>
+                  <Typography variant="h4" sx={{ fontWeight: 800, mb: 2 }}>{f.title}</Typography>
+                  <Typography variant="body1" sx={{ color: '#b0c5c6', lineHeight: 1.7 }}>{f.desc}</Typography>
+                </FeatureCard>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* Final CTA */}
       <Box sx={{ py: 20, textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <FloatingOrb size="600px" color={spectrumColors.primary} x="40%" y="10%" delay={0} duration={20} opacity={0.1} />
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>

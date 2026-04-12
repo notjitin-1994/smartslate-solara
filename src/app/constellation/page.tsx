@@ -59,11 +59,9 @@ export default function ConstellationPage() {
 
   useGSAP(() => {
     const targets = gsap.utils.toArray('.constellation-reveal');
-    gsap.set(targets, { opacity: 0, y: 30 });
-    
-    gsap.to(targets, {
-      y: 0,
-      opacity: 1,
+    gsap.from(targets, {
+      y: 30,
+      opacity: 0,
       duration: 1,
       stagger: 0.1,
       ease: 'power3.out',
@@ -92,24 +90,24 @@ export default function ConstellationPage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="constellation-reveal" sx={{ opacity: 0 }}>
+              <Box className="constellation-reveal">
                 <Chip 
                   icon={<Sparkles size={14} />}
                   label="COMING EARLY 2026" 
                   sx={{ mb: 4, bgcolor: 'rgba(124, 105, 245, 0.1)', color: constellationColors.primary, fontWeight: 800, px: 1 }} 
                 />
               </Box>
-              <Box className="constellation-reveal" sx={{ opacity: 0 }}>
+              <Box className="constellation-reveal">
                 <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
                   The Bridge to <span style={{ color: constellationColors.primary }}>Implementation.</span>
                 </Typography>
               </Box>
-              <Box className="constellation-reveal" sx={{ opacity: 0 }}>
+              <Box className="constellation-reveal">
                 <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 650 }}>
                   Constellation transforms strategic blueprints into detailed course architecture. From scripts to storyboards, bridge the gap between plan and reality.
                 </Typography>
               </Box>
-              <Box className="constellation-reveal" sx={{ display: 'flex', gap: 3, opacity: 0 }}>
+              <Box className="constellation-reveal" sx={{ display: 'flex', gap: 3 }}>
                 <MagneticButton variant="contained" sx={{ bgcolor: constellationColors.primary }}>Know More</MagneticButton>
                 <Button variant="text" sx={{ color: constellationColors.primary, fontWeight: 700 }}>Integration Guide</Button>
               </Box>

@@ -61,11 +61,9 @@ export default function NovaPage() {
 
   useGSAP(() => {
     const targets = gsap.utils.toArray('.nova-reveal');
-    gsap.set(targets, { opacity: 0, y: 30 });
-    
-    gsap.to(targets, {
-      y: 0,
-      opacity: 1,
+    gsap.from(targets, {
+      y: 30,
+      opacity: 0,
       duration: 1,
       stagger: 0.1,
       ease: 'power3.out',
@@ -82,29 +80,29 @@ export default function NovaPage() {
   return (
     <Box ref={containerRef} sx={{ background: '#020C1B', color: '#fff' }}>
       <HeroSection>
-        <FloatingOrb size="700px" color={novaColors.primary} x="70%" y="-10%" delay={0} duration={30} />
+        <FloatingOrb size="700px" color={novaColors.primary} x="70%" y="-10%" delay={0} duration={30} opacity={0.1} />
         
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="nova-reveal" sx={{ opacity: 0 }}>
+              <Box className="nova-reveal">
                 <Chip 
                   icon={<Clock size={14} />}
                   label="COMING Q3 2026" 
                   sx={{ mb: 4, bgcolor: 'rgba(34, 197, 94, 0.1)', color: novaColors.primary, fontWeight: 800, px: 1 }} 
                 />
               </Box>
-              <Box className="nova-reveal" sx={{ opacity: 0 }}>
+              <Box className="nova-reveal">
                 <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
                   Content Creation, <span style={{ color: novaColors.primary }}>Supernova Speed.</span>
                 </Typography>
               </Box>
-              <Box className="nova-reveal" sx={{ opacity: 0 }}>
+              <Box className="nova-reveal">
                 <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 650 }}>
                   Nova is the world's first AI co-author that understands learning science. Transform raw ideas into pedagogically sound content instantly.
                 </Typography>
               </Box>
-              <Box className="nova-reveal" sx={{ display: 'flex', gap: 3, opacity: 0 }}>
+              <Box className="nova-reveal" sx={{ display: 'flex', gap: 3 }}>
                 <MagneticButton variant="contained" sx={{ bgcolor: novaColors.primary }}>Join Waitlist</MagneticButton>
                 <Button variant="text" sx={{ color: novaColors.primary, fontWeight: 700 }}>Request Early Access</Button>
               </Box>
