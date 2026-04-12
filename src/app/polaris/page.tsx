@@ -4,8 +4,6 @@ import { Box, Container, Typography, Button, Grid, Chip } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
 import { motion, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { gsap } from 'gsap';
-import { useGSAP } from '@gsap/react';
 import {
   Compass,
   ArrowRight,
@@ -54,27 +52,11 @@ const FeatureCard = styled(motion.div)(() => ({
 
 export default function PolarisPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress, revealVariants, getAnimationProps } = useOptimizedAnimations();
+  const { scrollYProgress, revealVariants, useWorldClassEntrance, getAnimationProps } = useOptimizedAnimations();
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 90]);
 
-  useGSAP(() => {
-    gsap.from('.polaris-reveal', {
-      y: 30,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.1,
-      ease: 'power3.out',
-      clearProps: 'all'
-    });
-
-    gsap.from('.polaris-visual', {
-      scale: 0.8,
-      opacity: 0,
-      duration: 2,
-      ease: 'expo.out',
-      delay: 0.5
-    });
-  }, { scope: containerRef });
+  // Premium Entrance
+  useWorldClassEntrance(containerRef, '.polaris-reveal');
 
   const stats = [
     { icon: Zap, value: '15x', label: 'Faster Requirements' },
@@ -91,33 +73,35 @@ export default function PolarisPage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="polaris-reveal">
+              <Box className="polaris-reveal" sx={{ opacity: 0 }}>
                 <Chip label="NOW IN PUBLIC BETA" sx={{ mb: 4, bgcolor: 'rgba(6, 182, 212, 0.1)', color: polarisColors.primary, fontWeight: 800 }} />
               </Box>
-              <Box className="polaris-reveal">
+              <Box className="polaris-reveal" sx={{ opacity: 0 }}>
                 <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
                   The North Star of <span style={{ color: polarisColors.primary }}>Learning Design.</span>
                 </Typography>
               </Box>
-              <Box className="polaris-reveal">
+              <Box className="polaris-reveal" sx={{ opacity: 0 }}>
                 <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 600 }}>
                   Polaris automates the most difficult 40% of instructional design—transforming raw requirements into rigorous blueprints in minutes.
                 </Typography>
               </Box>
-              <Box className="polaris-reveal" sx={{ display: 'flex', gap: 3 }}>
+              <Box className="polaris-reveal" sx={{ display: 'flex', gap: 3, opacity: 0 }}>
                 <MagneticButton variant="contained" sx={{ bgcolor: polarisColors.primary, color: '#020C1B' }}>Start Free Trial</MagneticButton>
                 <Button variant="text" sx={{ color: polarisColors.primary, fontWeight: 700 }}>Watch Demo</Button>
               </Box>
             </Grid>
 
             <Grid size={{ xs: 12, md: 5 }} sx={{ display: { xs: 'none', md: 'block' } }}>
-              <motion.div style={{ rotate }} className="polaris-visual">
-                <Box sx={{ width: 400, height: 400, borderRadius: '50%', border: `2px dashed ${polarisColors.primary}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Box sx={{ width: 200, height: 200, borderRadius: '50%', background: `radial-gradient(circle, ${polarisColors.primary} 0%, ${polarisColors.dark} 100%)`, animation: `${starGlow} 4s infinite ease-in-out`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Compass size={100} color="#020C1B" strokeWidth={2.5} />
+              <Box className="visual-reveal" sx={{ opacity: 0 }}>
+                <motion.div style={{ rotate }}>
+                  <Box sx={{ width: 400, height: 400, borderRadius: '50%', border: `2px dashed ${polarisColors.primary}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box sx={{ width: 200, height: 200, borderRadius: '50%', background: `radial-gradient(circle, ${polarisColors.primary} 0%, ${polarisColors.dark} 100%)`, animation: `${starGlow} 4s infinite ease-in-out`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Compass size={100} color="#020C1B" strokeWidth={2.5} />
+                    </Box>
                   </Box>
-                </Box>
-              </motion.div>
+                </motion.div>
+              </Box>
             </Grid>
           </Grid>
         </Container>

@@ -5,8 +5,6 @@ import { styled, keyframes } from '@mui/material/styles';
 import { motion, AnimatePresence, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import { useState, useRef } from 'react';
-import { gsap } from 'gsap';
-import { useGSAP } from '@gsap/react';
 import {
   Compass,
   Network,
@@ -77,27 +75,10 @@ const modules = [
 
 export default function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress, revealVariants } = useOptimizedAnimations();
+  const { scrollYProgress, revealVariants, useWorldClassEntrance } = useOptimizedAnimations();
 
-  useGSAP(() => {
-    // Standard robust GSAP reveal
-    gsap.from('.hero-reveal', {
-      y: 30,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.1,
-      ease: 'power3.out',
-      clearProps: 'all'
-    });
-
-    gsap.from('.orbit-visual', {
-      scale: 0.8,
-      opacity: 0,
-      duration: 1.5,
-      ease: 'back.out(1.7)',
-      delay: 0.5
-    });
-  }, { scope: containerRef });
+  // Premium Entrance Timeline
+  useWorldClassEntrance(containerRef, '.hero-reveal');
 
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -200]);
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 90]);
@@ -113,7 +94,7 @@ export default function HomePage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="hero-reveal">
+              <Box className="hero-reveal" sx={{ opacity: 0 }}>
                 <Chip
                   icon={<Sparkles size={16} />}
                   label="2026 Innovation Awards Finalist"
@@ -121,19 +102,19 @@ export default function HomePage() {
                 />
               </Box>
 
-              <Box className="hero-reveal">
+              <Box className="hero-reveal" sx={{ opacity: 0 }}>
                 <Typography variant="h1" sx={{ mb: 3, fontSize: { xs: '3rem', md: '5.5rem' }, fontWeight: 900, lineHeight: 1, color: '#fff', letterSpacing: '-0.04em' }}>
                   The Future of Learning, <GradientText>Orchestrated.</GradientText>
                 </Typography>
               </Box>
 
-              <Box className="hero-reveal">
+              <Box className="hero-reveal" sx={{ opacity: 0 }}>
                 <Typography variant="h5" sx={{ mb: 6, color: '#b0c5c6', lineHeight: 1.5, fontSize: '1.5rem', fontWeight: 500, maxWidth: '600px' }}>
                   Solara is the world's first unified AI-native learning ecosystem. One intelligence, six modules, total transformation.
                 </Typography>
               </Box>
 
-              <Box className="hero-reveal" sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+              <Box className="hero-reveal" sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', opacity: 0 }}>
                 <MagneticButton component={Link} href="/polaris" variant="contained" endIcon={<ArrowRight size={20} />} strength={0.2} sx={{ background: '#a7dadb', color: '#020C1B' }}>
                   Explore Polaris
                 </MagneticButton>
@@ -143,24 +124,30 @@ export default function HomePage() {
               </Box>
             </Grid>
 
+            {/* Interactive Visual Hub */}
             <Grid size={{ xs: 12, md: 5 }} sx={{ display: { xs: 'none', md: 'block' } }}>
-              <motion.div style={{ y: y1, rotate: rotate }} className="orbit-visual">
-                <Box sx={{ width: 500, height: 500, borderRadius: '50%', border: '1px solid rgba(167, 218, 219, 0.15)', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Box sx={{ width: 140, height: 140, borderRadius: '50%', background: 'radial-gradient(circle, #a7dadb 0%, #7C69F5 100%)', zIndex: 2, animation: `${starGlow} 4s infinite ease-in-out`, boxShadow: '0 0 60px rgba(124, 105, 245, 0.4)' }} />
-                  {modules.map((m, i) => {
-                    const angle = (i * 60) * (Math.PI / 180);
-                    return (
-                      <Box key={m.id} sx={{ position: 'absolute', left: `${250 + Math.cos(angle) * 200 - 30}px`, top: `${250 + Math.sin(angle) * 200 - 30}px` }}>
-                        <motion.div whileHover={{ scale: 1.2 }} transition={{ type: 'spring', stiffness: 300 }}>
-                          <Box sx={{ width: 64, height: 64, borderRadius: '18px', background: m.accentColor, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 10px 25px ${m.accentColor}50` }}>
-                            <m.icon size={32} color="#020C1B" />
-                          </Box>
-                        </motion.div>
-                      </Box>
-                    );
-                  })}
-                </Box>
-              </motion.div>
+              <Box className="visual-reveal" sx={{ opacity: 0 }}>
+                <motion.div style={{ y: y1, rotate: rotate }}>
+                  <Box sx={{ width: 500, height: 500, borderRadius: '50%', border: '1px solid rgba(167, 218, 219, 0.15)', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {/* Central Star */}
+                    <Box sx={{ width: 140, height: 140, borderRadius: '50%', background: 'radial-gradient(circle, #a7dadb 0%, #7C69F5 100%)', zIndex: 2, animation: `${starGlow} 4s infinite ease-in-out`, boxShadow: '0 0 60px rgba(124, 105, 245, 0.4)' }} />
+                    
+                    {/* Orbiting Modules */}
+                    {modules.map((m, i) => {
+                      const angle = (i * 60) * (Math.PI / 180);
+                      return (
+                        <Box key={m.id} sx={{ position: 'absolute', left: `${250 + Math.cos(angle) * 200 - 30}px`, top: `${250 + Math.sin(angle) * 200 - 30}px` }}>
+                          <motion.div whileHover={{ scale: 1.2 }} transition={{ type: 'spring', stiffness: 300 }}>
+                            <Box sx={{ width: 64, height: 64, borderRadius: '18px', background: m.accentColor, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 10px 25px ${m.accentColor}50` }}>
+                              <m.icon size={32} color="#020C1B" />
+                            </Box>
+                          </motion.div>
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                </motion.div>
+              </Box>
             </Grid>
           </Grid>
         </Container>

@@ -4,8 +4,6 @@ import { Box, Container, Typography, Button, Grid, Chip } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRef } from 'react';
-import { gsap } from 'gsap';
-import { useGSAP } from '@gsap/react';
 import {
   Sparkles,
   Rocket,
@@ -57,19 +55,10 @@ const FeatureCard = styled(motion.div)(() => ({
 
 export default function NovaPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { getStaggerProps, revealVariants, getAnimationProps } = useOptimizedAnimations();
+  const { getStaggerProps, revealVariants, getAnimationProps, useWorldClassEntrance } = useOptimizedAnimations();
 
-  useGSAP(() => {
-    const targets = gsap.utils.toArray('.nova-reveal');
-    gsap.from(targets, {
-      y: 30,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.1,
-      ease: 'power3.out',
-      clearProps: 'all'
-    });
-  }, { scope: containerRef });
+  // Premium Entrance
+  useWorldClassEntrance(containerRef, '.nova-reveal');
 
   const features = [
     { icon: Brain, title: 'Pedagogical AI', desc: 'Content that isn\'t just text—it\'s structured for maximum retention and engagement.' },
@@ -85,35 +74,31 @@ export default function NovaPage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="nova-reveal">
+              <Box className="nova-reveal" sx={{ opacity: 0 }}>
                 <Chip 
                   icon={<Clock size={14} />}
                   label="COMING Q3 2026" 
                   sx={{ mb: 4, bgcolor: 'rgba(34, 197, 94, 0.1)', color: novaColors.primary, fontWeight: 800, px: 1 }} 
                 />
               </Box>
-              <Box className="nova-reveal">
+              <Box className="nova-reveal" sx={{ opacity: 0 }}>
                 <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
                   Content Creation, <span style={{ color: novaColors.primary }}>Supernova Speed.</span>
                 </Typography>
               </Box>
-              <Box className="nova-reveal">
+              <Box className="nova-reveal" sx={{ opacity: 0 }}>
                 <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 650 }}>
                   Nova is the world's first AI co-author that understands learning science. Transform raw ideas into pedagogically sound content instantly.
                 </Typography>
               </Box>
-              <Box className="nova-reveal" sx={{ display: 'flex', gap: 3 }}>
+              <Box className="nova-reveal" sx={{ display: 'flex', gap: 3, opacity: 0 }}>
                 <MagneticButton variant="contained" sx={{ bgcolor: novaColors.primary }}>Join Waitlist</MagneticButton>
                 <Button variant="text" sx={{ color: novaColors.primary, fontWeight: 700 }}>Request Early Access</Button>
               </Box>
             </Grid>
 
             <Grid size={{ xs: 12, md: 5 }}>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              >
+              <Box className="visual-reveal" sx={{ opacity: 0 }}>
                 <Box sx={{ 
                   p: 4, 
                   bgcolor: 'rgba(13, 27, 42, 0.6)', 
@@ -147,7 +132,7 @@ export default function NovaPage() {
                     <Button size="small" variant="contained" sx={{ bgcolor: novaColors.primary }}>Export SCORM</Button>
                   </Box>
                 </Box>
-              </motion.div>
+              </Box>
             </Grid>
           </Grid>
         </Container>

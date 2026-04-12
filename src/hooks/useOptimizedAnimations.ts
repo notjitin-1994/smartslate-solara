@@ -12,11 +12,11 @@ export interface UseOptimizedAnimationsOptions {
 }
 
 /**
- * Pro-grade animation hook for Solara (2026 Edition)
- * Combines GSAP (Timeline), React Spring (Physics), and Motion (Orchestration)
+ * World-Class Animation System for Solara (2026)
+ * Orchestrates GSAP, React Spring, and Motion for a premium digital experience.
  */
 export function useOptimizedAnimations(options: UseOptimizedAnimationsOptions = {}) {
-  const { reduceMotion = false, performanceMode = 'balanced' } = options;
+  const { reduceMotion = false } = options;
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,48 @@ export function useOptimizedAnimations(options: UseOptimizedAnimationsOptions = 
 
   const shouldOptimize = reduceMotion || prefersReducedMotion;
 
-  // React Spring physics for high-frequency micro-interactions
+  /**
+   * Premium Entrance Reveal
+   * Uses GSAP .to() with explicit initial states for maximum reliability.
+   */
+  const useWorldClassEntrance = (scope: React.RefObject<any>, selector: string = '.reveal-item') => {
+    useGSAP(() => {
+      const targets = gsap.utils.toArray(selector);
+      if (!targets.length || shouldOptimize) {
+        gsap.set(targets, { opacity: 1, y: 0, visibility: 'visible' });
+        return;
+      }
+
+      // Ensure hidden initially
+      gsap.set(targets, { opacity: 0, y: 40, filter: 'blur(10px)' });
+
+      const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+      
+      tl.to(targets, {
+        opacity: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        duration: 1.2,
+        stagger: 0.12,
+        clearProps: 'all'
+      });
+
+      // Special case for visuals
+      const visual = document.querySelector('.visual-reveal');
+      if (visual) {
+        gsap.set(visual, { opacity: 0, scale: 0.9, rotate: -5 });
+        tl.to(visual, {
+          opacity: 1,
+          scale: 1,
+          rotate: 0,
+          duration: 1.5,
+          ease: 'expo.out'
+        }, '-=0.8');
+      }
+    }, { scope });
+  };
+
+  // React Spring for organic hover physics
   const usePhysicalHover = () => {
     const [styles, api] = useSpring(() => ({
       scale: 1,
@@ -55,26 +96,7 @@ export function useOptimizedAnimations(options: UseOptimizedAnimationsOptions = 
     return { styles, onMouseEnter, onMouseLeave, onMouseMove };
   };
 
-  // GSAP for complex entrance timelines
-  const useEntranceTimeline = (ref: React.RefObject<any>, delay: number = 0) => {
-    useGSAP(() => {
-      if (shouldOptimize) {
-        gsap.set(ref.current, { opacity: 1, y: 0 });
-        return;
-      }
-
-      const tl = gsap.timeline({ delay });
-      tl.from(ref.current, {
-        opacity: 0,
-        y: 50,
-        filter: 'blur(10px)',
-        duration: 1.2,
-        ease: 'expo.out',
-      });
-    }, { scope: ref });
-  };
-
-  // Framer Motion for scroll transforms
+  // Framer Motion for high-fidelity scroll transforms
   const { scrollYProgress } = useScroll();
   const smoothProgress = useFramerSpring(scrollYProgress, {
     stiffness: 100,
@@ -83,11 +105,10 @@ export function useOptimizedAnimations(options: UseOptimizedAnimationsOptions = 
   });
 
   const revealVariants = {
-    hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      filter: 'blur(0px)',
       transition: {
         duration: 0.8,
         ease: [0.16, 1, 0.3, 1]
@@ -98,10 +119,9 @@ export function useOptimizedAnimations(options: UseOptimizedAnimationsOptions = 
   return {
     shouldOptimize,
     usePhysicalHover,
-    useEntranceTimeline,
+    useWorldClassEntrance,
     scrollYProgress: smoothProgress,
     revealVariants,
-    // Keep compatibility with existing code
     getStaggerProps: (staggerDelay = 0.1) => ({
       initial: "hidden",
       whileInView: "visible",

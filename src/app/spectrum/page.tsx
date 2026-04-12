@@ -4,8 +4,6 @@ import { Box, Container, Typography, Button, Grid, Chip } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { gsap } from 'gsap';
-import { useGSAP } from '@gsap/react';
 import {
   BarChart3,
   Brain,
@@ -54,20 +52,11 @@ const FeatureCard = styled(motion.div)(() => ({
 
 export default function SpectrumPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { getStaggerProps, revealVariants, scrollYProgress, getAnimationProps } = useOptimizedAnimations();
+  const { getStaggerProps, revealVariants, scrollYProgress, getAnimationProps, useWorldClassEntrance } = useOptimizedAnimations();
   const yParallax = useTransform(scrollYProgress, [0, 1], [0, -150]);
 
-  useGSAP(() => {
-    const targets = gsap.utils.toArray('.spectrum-reveal');
-    gsap.from(targets, {
-      y: 30,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.1,
-      ease: 'power3.out',
-      clearProps: 'all'
-    });
-  }, { scope: containerRef });
+  // Premium Entrance
+  useWorldClassEntrance(containerRef, '.spectrum-reveal');
 
   const stats = [
     { icon: Brain, value: '94%', label: 'Prediction Rate' },
@@ -90,107 +79,80 @@ export default function SpectrumPage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="spectrum-reveal">
+              <Box className="spectrum-reveal" sx={{ opacity: 0 }}>
                 <Chip 
                   icon={<BarChart3 size={14} />}
                   label="COMING IN 2027" 
                   sx={{ mb: 4, bgcolor: 'rgba(139, 92, 246, 0.1)', color: spectrumColors.primary, fontWeight: 800, px: 1 }} 
                 />
               </Box>
-              <Box className="spectrum-reveal">
+              <Box className="spectrum-reveal" sx={{ opacity: 0 }}>
                 <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
                   Intelligence in <span style={{ color: spectrumColors.primary }}>High Definition.</span>
                 </Typography>
               </Box>
-              <Box className="spectrum-reveal">
+              <Box className="spectrum-reveal" sx={{ opacity: 0 }}>
                 <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 650 }}>
                   Spectrum is the final frontier of learning analytics. Real-time predictive intelligence that proves the ROI of every learning moment.
                 </Typography>
               </Box>
-              <Box className="spectrum-reveal" sx={{ display: 'flex', gap: 3 }}>
+              <Box className="spectrum-reveal" sx={{ display: 'flex', gap: 3, opacity: 0 }}>
                 <MagneticButton variant="contained" sx={{ bgcolor: spectrumColors.primary }}>Get Briefing</MagneticButton>
                 <Button variant="text" sx={{ color: spectrumColors.primary, fontWeight: 700 }}>Data Roadmap</Button>
               </Box>
             </Grid>
 
             <Grid size={{ xs: 12, md: 5 }} sx={{ display: { xs: 'none', md: 'block' } }}>
-              <motion.div style={{ y: yParallax }}>
-                <Box sx={{ 
-                  p: 4, 
-                  bgcolor: 'rgba(13, 27, 42, 0.6)', 
-                  borderRadius: '32px', 
-                  border: '1px solid rgba(139, 92, 246, 0.2)',
-                  boxShadow: '0 40px 80px rgba(0,0,0,0.4)',
-                  position: 'relative',
-                  overflow: 'hidden'
-                }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 800 }}>ROI Forecast</Typography>
-                    <TrendingUp color={spectrumColors.primary} />
-                  </Box>
-                  
-                  {[80, 60, 95, 40].map((h, i) => (
-                    <Box key={i} sx={{ display: 'flex', alignItems: 'flex-end', gap: 2, mb: 2 }}>
-                      <Box sx={{ width: 40, height: 20, bgcolor: 'rgba(255,255,255,0.05)', borderRadius: '4px' }} />
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${h}%` }}
-                        transition={{ duration: 1, delay: i * 0.1 }}
-                        style={{ height: 12, background: `linear-gradient(90deg, ${spectrumColors.primary}, ${spectrumColors.light})`, borderRadius: '6px' }}
-                      />
+              <Box className="visual-reveal" sx={{ opacity: 0 }}>
+                <motion.div style={{ y: yParallax }}>
+                  <Box sx={{ 
+                    p: 4, 
+                    bgcolor: 'rgba(13, 27, 42, 0.6)', 
+                    borderRadius: '32px', 
+                    border: '1px solid rgba(139, 92, 246, 0.2)',
+                    boxShadow: '0 40px 80px rgba(0,0,0,0.4)',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
+                      <Typography variant="h6" sx={{ fontWeight: 800 }}>ROI Forecast</Typography>
+                      <TrendingUp color={spectrumColors.primary} />
                     </Box>
-                  ))}
-                  
-                  <Box sx={{ mt: 4, pt: 4, borderTop: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
-                    <Typography variant="h4" sx={{ fontWeight: 900, color: spectrumColors.primary }}>+250%</Typography>
-                    <Typography variant="caption" sx={{ color: '#7a8a8b' }}>Projected Efficiency Gain</Typography>
+                    
+                    {[80, 60, 95, 40].map((h, i) => (
+                      <Box key={i} sx={{ display: 'flex', alignItems: 'flex-end', gap: 2, mb: 2 }}>
+                        <Box sx={{ width: 40, height: 20, bgcolor: 'rgba(255,255,255,0.05)', borderRadius: '4px' }} />
+                        <motion.div
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${h}%` }}
+                          transition={{ duration: 1, delay: i * 0.1 }}
+                          style={{ height: 12, background: `linear-gradient(90deg, ${spectrumColors.primary}, ${spectrumColors.light})`, borderRadius: '6px' }}
+                        />
+                      </Box>
+                    ))}
+                    
+                    <Box sx={{ mt: 4, pt: 4, borderTop: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
+                      <Typography variant="h4" sx={{ fontWeight: 900, color: spectrumColors.primary }}>+250%</Typography>
+                      <Typography variant="caption" sx={{ color: '#7a8a8b' }}>Projected Efficiency Gain</Typography>
+                    </Box>
                   </Box>
-                </Box>
-              </motion.div>
+                </motion.div>
+              </Box>
             </Grid>
           </Grid>
         </Container>
       </HeroSection>
 
-      {/* Stats Section */}
       <Box sx={{ py: 15, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <Container maxWidth="lg">
           <Grid container spacing={4}>
             {stats.map((stat, i) => (
               <Grid size={{ xs: 12, sm: 6, md: 3 }} key={i}>
-                <motion.div {...getAnimationProps({ transition: { delay: i * 0.1 } })}>
-                  <Box sx={{ textAlign: 'center', p: 4, bgcolor: 'rgba(255,255,255,0.02)', borderRadius: '24px' }}>
-                    <stat.icon size={40} color={spectrumColors.primary} style={{ marginBottom: 16 }} />
-                    <Typography variant="h2" sx={{ fontWeight: 900, color: spectrumColors.primary }}>{stat.value}</Typography>
-                    <Typography variant="body2" sx={{ color: '#7a8a8b', fontWeight: 700 }}>{stat.label.toUpperCase()}</Typography>
-                  </Box>
-                </motion.div>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
-
-      {/* Features Grid */}
-      <Box sx={{ py: 15, bgcolor: 'rgba(139, 92, 246, 0.02)' }}>
-        <Container maxWidth="lg">
-          <Box sx={{ mb: 10, textAlign: 'center' }}>
-            <Typography variant="h2" sx={{ fontWeight: 900, mb: 3 }}>Predictive Intelligence.</Typography>
-            <Typography variant="h6" sx={{ color: '#b0c5c6', maxWidth: 700, mx: 'auto' }}>
-              Spectrum turns dark data into clear, actionable strategies for growth and optimization.
-            </Typography>
-          </Box>
-
-          <Grid container spacing={4}>
-            {features.map((f, i) => (
-              <Grid size={{ xs: 12, md: 4 }} key={i}>
-                <FeatureCard {...getAnimationProps({ transition: { delay: i * 0.1 } })}>
-                  <Box sx={{ width: 64, height: 64, bgcolor: `${spectrumColors.primary}20`, borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}>
-                    <f.icon size={32} color={spectrumColors.primary} />
-                  </Box>
-                  <Typography variant="h4" sx={{ fontWeight: 800, mb: 2 }}>{f.title}</Typography>
-                  <Typography variant="body1" sx={{ color: '#b0c5c6', lineHeight: 1.7 }}>{f.desc}</Typography>
-                </FeatureCard>
+                <Box sx={{ textAlign: 'center', p: 4, bgcolor: 'rgba(255,255,255,0.02)', borderRadius: '24px' }}>
+                  <stat.icon size={40} color={spectrumColors.primary} style={{ marginBottom: 16 }} />
+                  <Typography variant="h2" sx={{ fontWeight: 900, color: spectrumColors.primary }}>{stat.value}</Typography>
+                  <Typography variant="body2" sx={{ color: '#7a8a8b', fontWeight: 700 }}>{stat.label.toUpperCase()}</Typography>
+                </Box>
               </Grid>
             ))}
           </Grid>

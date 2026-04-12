@@ -4,8 +4,6 @@ import { Box, Container, Typography, Button, Grid, Chip } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { gsap } from 'gsap';
-import { useGSAP } from '@gsap/react';
 import {
   Network,
   Zap,
@@ -54,20 +52,11 @@ const FeatureCard = styled(motion.div)(() => ({
 
 export default function ConstellationPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { getStaggerProps, revealVariants, scrollYProgress, getAnimationProps } = useOptimizedAnimations();
+  const { scrollYProgress, revealVariants, getAnimationProps, useWorldClassEntrance } = useOptimizedAnimations();
   const rotate = useTransform(scrollYProgress, [0, 1], [0, -60]);
 
-  useGSAP(() => {
-    const targets = gsap.utils.toArray('.constellation-reveal');
-    gsap.from(targets, {
-      y: 30,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.1,
-      ease: 'power3.out',
-      clearProps: 'all'
-    });
-  }, { scope: containerRef });
+  // Premium Entrance
+  useWorldClassEntrance(containerRef, '.constellation-reveal');
 
   const stats = [
     { icon: Zap, value: '90%', label: 'Time Reduction' },
@@ -90,61 +79,63 @@ export default function ConstellationPage() {
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="constellation-reveal">
+              <Box className="constellation-reveal" sx={{ opacity: 0 }}>
                 <Chip 
                   icon={<Sparkles size={14} />}
                   label="COMING EARLY 2026" 
                   sx={{ mb: 4, bgcolor: 'rgba(124, 105, 245, 0.1)', color: constellationColors.primary, fontWeight: 800, px: 1 }} 
                 />
               </Box>
-              <Box className="constellation-reveal">
+              <Box className="constellation-reveal" sx={{ opacity: 0 }}>
                 <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3.5rem', md: '5rem' }, lineHeight: 1, mb: 3 }}>
                   The Bridge to <span style={{ color: constellationColors.primary }}>Implementation.</span>
                 </Typography>
               </Box>
-              <Box className="constellation-reveal">
+              <Box className="constellation-reveal" sx={{ opacity: 0 }}>
                 <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 650 }}>
                   Constellation transforms strategic blueprints into detailed course architecture. From scripts to storyboards, bridge the gap between plan and reality.
                 </Typography>
               </Box>
-              <Box className="constellation-reveal" sx={{ display: 'flex', gap: 3 }}>
+              <Box className="constellation-reveal" sx={{ display: 'flex', gap: 3, opacity: 0 }}>
                 <MagneticButton variant="contained" sx={{ bgcolor: constellationColors.primary }}>Know More</MagneticButton>
                 <Button variant="text" sx={{ color: constellationColors.primary, fontWeight: 700 }}>Integration Guide</Button>
               </Box>
             </Grid>
 
             <Grid size={{ xs: 12, md: 5 }} sx={{ display: { xs: 'none', md: 'block' } }}>
-              <motion.div style={{ rotate }}>
-                <Box sx={{ 
-                  width: 450, 
-                  height: 450, 
-                  borderRadius: '50%', 
-                  border: `1px dashed ${constellationColors.primary}40`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  position: 'relative'
-                }}>
-                  {[...Array(8)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.6, 0.3] }}
-                      transition={{ duration: 3 + i, repeat: Infinity }}
-                      style={{
-                        position: 'absolute',
-                        width: 8,
-                        height: 8,
-                        borderRadius: '50%',
-                        background: constellationColors.primary,
-                        left: `${225 + Math.cos(i * 45 * Math.PI / 180) * 200 - 4}px`,
-                        top: `${225 + Math.sin(i * 45 * Math.PI / 180) * 200 - 4}px`,
-                        boxShadow: `0 0 15px ${constellationColors.primary}`
-                      }}
-                    />
-                  ))}
-                  <Network size={120} color={constellationColors.primary} strokeWidth={1.5} />
-                </Box>
-              </motion.div>
+              <Box className="visual-reveal" sx={{ opacity: 0 }}>
+                <motion.div style={{ rotate }}>
+                  <Box sx={{ 
+                    width: 450, 
+                    height: 450, 
+                    borderRadius: '50%', 
+                    border: `1px dashed ${constellationColors.primary}40`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative'
+                  }}>
+                    {[...Array(8)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.6, 0.3] }}
+                        transition={{ duration: 3 + i, repeat: Infinity }}
+                        style={{
+                          position: 'absolute',
+                          width: 8,
+                          height: 8,
+                          borderRadius: '50%',
+                          background: constellationColors.primary,
+                          left: `${225 + Math.cos(i * 45 * Math.PI / 180) * 200 - 4}px`,
+                          top: `${225 + Math.sin(i * 45 * Math.PI / 180) * 200 - 4}px`,
+                          boxShadow: `0 0 15px ${constellationColors.primary}`
+                        }}
+                      />
+                    ))}
+                    <Network size={120} color={constellationColors.primary} strokeWidth={1.5} />
+                  </Box>
+                </motion.div>
+              </Box>
             </Grid>
           </Grid>
         </Container>
