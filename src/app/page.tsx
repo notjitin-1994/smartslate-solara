@@ -50,23 +50,23 @@ const float = keyframes`
 
 // Styled Components
 const PageSection = styled(Box)(({ theme }) => ({
-  padding: '80px 0',
+  padding: '48px 0 64px',
   position: 'relative',
   overflow: 'hidden',
   [theme.breakpoints.down('sm')]: {
-    padding: '60px 0',
+    padding: '32px 0 48px',
   },
 }));
 
 const HeroSection = styled(Box)(({ theme }) => ({
-  padding: 'calc(var(--header-total-height-mobile) + 2rem) 0 3rem',
+  padding: 'calc(var(--header-total-height-mobile) + 1rem) 0 1.5rem',
   display: 'flex',
   alignItems: 'center',
   position: 'relative',
   overflow: 'hidden',
   background: BRAND_DARK,
   [theme.breakpoints.up('md')]: {
-    padding: 'calc(var(--header-total-height-desktop) + 3rem) 0 4rem',
+    padding: 'calc(var(--header-total-height-desktop) + 1.5rem) 0 2rem',
   },
 }));
 
@@ -293,22 +293,6 @@ export default function HomePage() {
 
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Box sx={{ maxWidth: '900px' }}>
-            <Box className="reveal-item" sx={{ mb: 4 }}>
-              <AnimatedShinyText className="inline-flex items-center justify-start px-0 py-1 transition ease-out">
-                <Chip
-                  icon={<Sparkles size={16} color={BRAND_TEAL} />}
-                  label="Solara — The Intelligent Learning Universe"
-                  sx={{ 
-                    background: 'rgba(167, 218, 219, 0.1)', 
-                    color: BRAND_TEAL, 
-                    fontWeight: 700, 
-                    border: `1px solid ${BRAND_TEAL}30`,
-                    cursor: 'pointer'
-                  }}
-                />
-              </AnimatedShinyText>
-            </Box>
-
             <Box className="reveal-item">
               <Typography variant="h1" sx={{ mb: 3, fontSize: { xs: '2.75rem', sm: '4.5rem', md: '6.5rem' }, fontWeight: 900, lineHeight: 1, letterSpacing: '-0.04em' }}>
                 The Future of Learning, <SolidAccentText>Orchestrated.</SolidAccentText>
@@ -334,7 +318,7 @@ export default function HomePage() {
       </HeroSection>
 
       {/* Stats Section */}
-      <PageSection sx={{ py: { xs: 8, md: 15 } }}>
+      <PageSection>
         <Container maxWidth="lg">
           <Box sx={{ textAlign: 'left', mb: { xs: 6, md: 10 } }} className="reveal-item">
             <Typography variant="overline" sx={{ color: BRAND_TEAL, fontWeight: 900, letterSpacing: '0.3em' }}>BY THE NUMBERS</Typography>
@@ -357,7 +341,7 @@ export default function HomePage() {
       </PageSection>
 
       {/* Comparison Section - Interactive Tabbed Switcher */}
-      <PageSection sx={{ background: 'rgba(2, 12, 27, 0.6)', py: { xs: 10, md: 20 } }}>
+      <PageSection sx={{ background: 'rgba(2, 12, 27, 0.6)' }}>
         <Container maxWidth="lg">
           <Box sx={{ mb: { xs: 6, md: 10 } }} className="reveal-item">
             <Typography variant="overline" sx={{ color: BRAND_TEAL, fontWeight: 900, letterSpacing: '0.3em' }}>SOLARA VS LEGACY</Typography>
@@ -430,7 +414,6 @@ export default function HomePage() {
                 ) : (
                   <Grid size={12}>
                     <Box sx={{ p: { xs: 4, md: 6 }, borderRadius: '32px', background: `${BRAND_TEAL}10`, border: `1px solid ${BRAND_TEAL}30`, position: 'relative' }}>
-                      <Box sx={{ position: 'absolute', top: 30, right: 30, background: BRAND_TEAL, color: BRAND_DARK, px: 2, py: 0.75, borderRadius: '24px', fontSize: '0.75rem', fontWeight: 900 }}>ORCHESTRATED</Box>
                       <Typography variant="h4" sx={{ mb: 6, fontWeight: 800, color: BRAND_TEAL, display: 'flex', alignItems: 'center', gap: 2 }}>
                         <Zap size={28} fill={BRAND_TEAL} />
                         Next-Gen Intelligent Universe
@@ -455,7 +438,7 @@ export default function HomePage() {
       </PageSection>
 
       {/* Solara Modules Section */}
-      <PageSection sx={{ py: { xs: 10, md: 20 } }}>
+      <PageSection>
         <Container maxWidth="lg">
           <Box sx={{ mb: { xs: 8, md: 12 } }} className="reveal-item">
             <Chip label="SOLARA PLATFORM" sx={{ mb: 3, background: `${BRAND_TEAL}10`, color: BRAND_TEAL, fontWeight: 800, border: `1px solid ${BRAND_TEAL}30` }} />
@@ -507,7 +490,7 @@ export default function HomePage() {
       </PageSection>
 
       {/* Core Capabilities */}
-      <PageSection sx={{ py: { xs: 8, md: 15 }, background: 'rgba(2, 12, 27, 0.4)' }}>
+      <PageSection sx={{ background: 'rgba(2, 12, 27, 0.4)' }}>
         <Container maxWidth="lg">
           <Box sx={{ textAlign: 'left', mb: { xs: 6, md: 10 } }} className="reveal-item">
             <Typography variant="overline" sx={{ color: BRAND_TEAL, fontWeight: 900, letterSpacing: '0.3em' }}>CORE CAPABILITIES</Typography>
