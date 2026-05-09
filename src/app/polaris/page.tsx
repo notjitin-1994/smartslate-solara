@@ -170,70 +170,41 @@ export default function PolarisPage() {
         <FloatingOrb size="80vw" color={BRAND_TEAL} x="-10%" y="-20%" opacity={0.15} />
         
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-          <Grid container spacing={8} alignItems="center">
-            <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="reveal-item" sx={{ mb: 4 }}>
-                <AnimatedShinyText className="inline-flex items-center justify-start px-0 py-1 transition ease-out">
-                  <Chip
-                    icon={<Sparkles size={16} color={BRAND_TEAL} />}
-                    label="NOW IN PUBLIC BETA"
-                    sx={{ 
-                      background: 'rgba(6, 182, 212, 0.1)', 
-                      color: BRAND_TEAL, 
-                      fontWeight: 800, 
-                      border: `1px solid ${BRAND_TEAL}30`,
-                      cursor: 'pointer'
-                    }}
-                  />
-                </AnimatedShinyText>
-              </Box>
-              <Box className="reveal-item">
-                <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3rem', sm: '4.5rem', md: '5.5rem' }, lineHeight: 1, mb: 3, letterSpacing: '-0.04em' }}>
-                  The North Star of <SolidAccentText>Learning Design.</SolidAccentText>
-                </Typography>
-              </Box>
-              <Box className="reveal-item">
-                <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 650, lineHeight: 1.5, fontSize: { xs: '1.1rem', md: '1.5rem' }, fontWeight: 400, opacity: 0.9 }}>
-                  Polaris automates the most difficult 40% of instructional design—transforming raw requirements into rigorous, implementation-ready learning blueprints in minutes.
-                </Typography>
-              </Box>
-              <Box className="reveal-item" sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
-                <CTAButton variant="contained" strength={0.1} sx={{ width: { xs: '100%', sm: 'auto' } }}>
-                  Start Free Trial
-                </CTAButton>
-                <SecondaryButton variant="outlined" strength={0.1} sx={{ width: { xs: '100%', sm: 'auto' } }}>
-                  Watch Demo
-                </SecondaryButton>
-              </Box>
-            </Grid>
-
-            <Grid size={{ xs: 12, md: 5 }} sx={{ display: { xs: 'none', md: 'block' } }}>
-              <Box className="visual-reveal" sx={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
-                <motion.div style={{ rotate }}>
-                  <Box sx={{ width: 450, height: 450, borderRadius: '50%', border: `1px dashed ${BRAND_TEAL}40`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Box sx={{ width: 220, height: 220, borderRadius: '50%', background: BRAND_TEAL, animation: `${starGlow} 4s infinite ease-in-out`, boxShadow: `0 0 80px ${BRAND_TEAL}80`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Compass size={110} color={BRAND_DARK} strokeWidth={2} />
-                    </Box>
-                  </Box>
-                </motion.div>
-                {/* Orbiting Elements */}
-                {[0, 120, 240].map((angle, i) => {
-                  const rad = (angle * Math.PI) / 180;
-                  const x = Math.cos(rad) * 225 - 24;
-                  const y = Math.sin(rad) * 225 - 24;
-                  return (
-                    <Box key={i} sx={{ position: 'absolute', left: '50%', top: '50%', transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`, animation: `${float} ${3 + i}s infinite ease-in-out` }}>
-                      <Box sx={{ width: 48, height: 48, borderRadius: '12px', background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(10px)', border: `1px solid ${BRAND_TEAL}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: BRAND_TEAL }}>
-                         {i === 0 && <LayoutTemplate size={20} />}
-                         {i === 1 && <PieChart size={20} />}
-                         {i === 2 && <Target size={20} />}
-                      </Box>
-                    </Box>
-                  );
-                })}
-              </Box>
-            </Grid>
-          </Grid>
+          <Box sx={{ maxWidth: '850px' }}>
+            <Box className="reveal-item" sx={{ mb: 4 }}>
+              <AnimatedShinyText className="inline-flex items-center justify-start px-0 py-1 transition ease-out">
+                <Chip
+                  icon={<Sparkles size={16} color={BRAND_TEAL} />}
+                  label="NOW IN PUBLIC BETA"
+                  sx={{ 
+                    background: 'rgba(6, 182, 212, 0.1)', 
+                    color: BRAND_TEAL, 
+                    fontWeight: 800, 
+                    border: `1px solid ${BRAND_TEAL}30`,
+                    cursor: 'pointer'
+                  }}
+                />
+              </AnimatedShinyText>
+            </Box>
+            <Box className="reveal-item">
+              <Typography variant="h1" sx={{ fontWeight: 900, fontSize: { xs: '3rem', sm: '4.5rem', md: '5.5rem' }, lineHeight: 1, mb: 3, letterSpacing: '-0.04em' }}>
+                The North Star of <SolidAccentText>Learning Design.</SolidAccentText>
+              </Typography>
+            </Box>
+            <Box className="reveal-item">
+              <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 6, maxWidth: 650, lineHeight: 1.5, fontSize: { xs: '1.1rem', md: '1.5rem' }, fontWeight: 400, opacity: 0.9 }}>
+                Polaris automates the most difficult 40% of instructional design—transforming raw requirements into rigorous, implementation-ready learning blueprints in minutes.
+              </Typography>
+            </Box>
+            <Box className="reveal-item" sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+              <CTAButton variant="contained" strength={0.1} sx={{ width: { xs: '100%', sm: 'auto' } }}>
+                Start Free Trial
+              </CTAButton>
+              <SecondaryButton variant="outlined" strength={0.1} sx={{ width: { xs: '100%', sm: 'auto' } }}>
+                Watch Demo
+              </SecondaryButton>
+            </Box>
+          </Box>
         </Container>
       </HeroSection>
 
