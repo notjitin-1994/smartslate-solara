@@ -203,7 +203,7 @@ export default function Header() {
                 width={160} 
                 height={40} 
                 priority 
-                style={{ height: 'auto', objectFit: 'contain' }} 
+                style={{ height: '100%', width: 'auto', objectFit: 'contain' }} 
               />
             </LogoLink>
           </motion.div>
