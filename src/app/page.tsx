@@ -286,12 +286,13 @@ export default function HomePage() {
   useWorldClassEntrance(containerRef, '.reveal-item');
 
   return (
-    <Box ref={containerRef} sx={{ background: BRAND_DARK, color: '#fff' }}>
+    <Box ref={containerRef} sx={{ background: BRAND_DARK, color: '#fff', position: 'relative', overflowX: 'hidden' }}>
       <SkipToContent />
 
       {/* Hero Section - Pure Typographic focused */}
       <HeroSection role="banner">
-        <RetroGrid className="opacity-30" lightLineColor={BRAND_TEAL} darkLineColor={BRAND_TEAL} />
+        <RetroGrid className="opacity-40" lightLineColor={BRAND_TEAL} darkLineColor={BRAND_TEAL} />
+        <FloatingOrb size="80vw" color={BRAND_TEAL} x="-10%" y="-10%" opacity={0.1} />
 
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Box sx={{ maxWidth: '900px' }}>
