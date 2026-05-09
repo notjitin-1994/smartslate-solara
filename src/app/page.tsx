@@ -496,9 +496,18 @@ export default function HomePage() {
                       <Button 
                         component={Link} 
                         href="/polaris" 
-                        variant="text" 
-                        endIcon={<ArrowRight size={18} />}
-                        sx={{ color: BRAND_TEAL, fontWeight: 800, alignSelf: 'flex-start', p: 0, fontSize: '0.95rem', '&:hover': { background: 'transparent', transform: 'translateX(5px)' }, transition: 'all 0.3s' }}
+                        variant="contained" 
+                        sx={{ 
+                          background: BRAND_INDIGO, 
+                          color: '#fff', 
+                          fontWeight: 800, 
+                          alignSelf: 'flex-start', 
+                          px: 3, 
+                          py: 1,
+                          borderRadius: '10px',
+                          textTransform: 'none',
+                          '&:hover': { background: '#3730A3' }
+                        }}
                       >
                         Experience Now
                       </Button>
