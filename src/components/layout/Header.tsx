@@ -13,14 +13,16 @@ const HeaderWrapper = styled(motion.header, {
   shouldForwardProp: (prop) => prop !== 'hide'
 })<{ hide?: boolean }>(({ theme, hide }) => ({
   position: 'fixed',
-  top: theme.spacing(2),
+  top: 'var(--nav-top-offset)',
   left: '50%',
-  zIndex: 1000,
+  transform: 'translateX(-50%)',
+  zIndex: 'var(--z-header)',
   width: 'calc(100vw - 32px)',
   maxWidth: theme.breakpoints.values.lg,
+  height: 'var(--nav-height-desktop)',
   [theme.breakpoints.down('sm')]: {
     width: 'calc(100vw - 16px)',
-    top: theme.spacing(1),
+    height: 'var(--nav-height-mobile)',
   },
 }));
 
@@ -28,11 +30,14 @@ const HeaderBackground = styled(Box)(({ theme }) => ({
   position: 'absolute',
   inset: 0,
   backgroundColor: 'rgba(9, 21, 33, 0.4)',
-  backdropFilter: 'blur(20px) saturate(180%)',
-  WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-  border: '1px solid rgba(167, 218, 219, 0.3)',
-  borderRadius: theme.spacing(2.5),
-  boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.3)',
+  backdropFilter: 'blur(16px) saturate(180%)',
+  WebkitBackdropFilter: 'blur(16px) saturate(180%)',
+  border: '1px solid var(--primary-accent)',
+  borderRadius: 'var(--radius-lg)',
+  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+  '@supports not (backdrop-filter: blur(1px))': {
+    backgroundColor: 'rgba(9, 21, 33, 0.85)',
+  },
 }));
 
 const HeaderContent = styled(Container)(({ theme }) => ({
@@ -40,24 +45,40 @@ const HeaderContent = styled(Container)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: `${theme.spacing(1.5)} ${theme.spacing(3)}`,
+  height: '100%',
+  padding: '0 var(--space-lg)',
   width: '100%',
+  maxWidth: 'none !important',
   [theme.breakpoints.down('sm')]: {
-    padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
+    padding: '0 var(--space-md)',
+  },
+}));
+
+const LogoLink = styled(Link)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  textDecoration: 'none',
+  height: 40,
+  transition: 'transform 0.2s ease',
+  '&:hover': {
+    transform: 'scale(1.05)',
+  },
+  [theme.breakpoints.down('sm')]: {
+    height: 36,
   },
 }));
 
 const NavLink = styled(Link)(({ theme }) => ({
-  color: 'rgba(255, 255, 255, 0.7)',
+  color: 'var(--text-primary)',
   textDecoration: 'none',
-  fontSize: '0.95rem',
-  fontWeight: 600,
+  fontSize: '0.9rem',
+  fontWeight: 500,
   position: 'relative',
   padding: '8px 12px',
-  borderRadius: '12px',
+  borderRadius: '8px',
   transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
   '&:hover': {
-    color: '#A7DADB',
+    color: 'var(--primary-accent)',
     backgroundColor: 'rgba(167, 218, 219, 0.1)',
   },
 }));
@@ -82,7 +103,7 @@ const MobileMenu = styled(motion.div)(({ theme }) => ({
 export default function Header() {
   const [hide, setHide] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { useMagnetic, shouldOptimize } = useOptimizedAnimations();
+  const { useMagnetic } = useOptimizedAnimations();
   const { ref: logoRef, position: logoPos, handleMouseMove: handleLogoMove, reset: resetLogo } = useMagnetic(0.2);
 
   useEffect(() => {
@@ -124,10 +145,18 @@ export default function Header() {
             animate={{ x: logoPos.x, y: logoPos.y }}
             onMouseMove={(e: any) => handleLogoMove(e.nativeEvent)}
             onMouseLeave={resetLogo}
+            style={{ display: 'flex' }}
           >
-            <Link href="https://smartslate.io" style={{ display: 'flex' }}>
-              <Image src="/logo.png" alt="Solara Logo" width={140} height={40} priority style={{ objectFit: 'contain' }} />
-            </Link>
+            <LogoLink href="/">
+              <Image 
+                src="/logo.png" 
+                alt="Smartslate" 
+                width={160} 
+                height={40} 
+                priority 
+                style={{ height: 'auto', objectFit: 'contain' }} 
+              />
+            </LogoLink>
           </motion.div>
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -139,7 +168,7 @@ export default function Header() {
             
             <Button
               onClick={() => setMobileMenuOpen(true)}
-              sx={{ display: { md: 'none' }, minWidth: 'auto', p: 1, color: '#A7DADB' }}
+              sx={{ display: { md: 'none' }, minWidth: 'auto', p: 1, color: 'var(--primary-accent)' }}
             >
               <Menu size={24} />
             </Button>

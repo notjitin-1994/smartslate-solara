@@ -25,6 +25,17 @@
   --border-subtle: 1px solid #2a3a4a;
   --input-border: #2a3a4a; /* alias for compatibility */
   
+  /* Layout Tokens */
+  --nav-height-desktop: 64px;
+  --nav-height-mobile: 56px;
+  --nav-top-offset: 16px;
+  --section-padding-y: 80px;
+  --hero-padding-top: 32px;
+  
+  /* Combined offsets for content */
+  --header-total-height-desktop: calc(var(--nav-height-desktop) + var(--nav-top-offset));
+  --header-total-height-mobile: calc(var(--nav-height-mobile) + var(--nav-top-offset));
+
   /* Spacing */
   --space-xs: 4px;
   --space-sm: 8px;
