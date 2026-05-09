@@ -26,7 +26,7 @@ const HeaderWrapper = styled(motion.header, {
   },
 }));
 
-const HeaderBackground = styled(Box)(({ theme }) => ({
+const HeaderBackground = styled(motion.div)(({ theme }) => ({
   position: 'absolute',
   inset: 0,
   backgroundColor: 'rgba(9, 21, 33, 0.4)',
@@ -151,6 +151,7 @@ const HamburgerLine = styled(motion.span)(() => ({
 
 export default function Header() {
   const [hide, setHide] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { useMagnetic } = useOptimizedAnimations();
   const { ref: logoRef, position: logoPos, handleMouseMove: handleLogoMove, reset: resetLogo } = useMagnetic(0.2);
@@ -159,8 +160,14 @@ export default function Header() {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      
+      // Scrolled state for background animation
+      setScrolled(currentScrollY > 20);
+
+      // Hide/Show logic
       if (currentScrollY > lastScrollY && currentScrollY > 100) setHide(true);
       else setHide(false);
+      
       lastScrollY = currentScrollY;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -187,7 +194,16 @@ export default function Header() {
         }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       >
-        <HeaderBackground />
+        <HeaderBackground 
+          initial={false}
+          animate={{ 
+            opacity: scrolled ? 1 : 0.2,
+            backgroundColor: scrolled ? 'rgba(9, 21, 33, 0.4)' : 'rgba(9, 21, 33, 0)',
+            backdropFilter: scrolled ? 'blur(16px) saturate(180%)' : 'blur(0px) saturate(100%)',
+            border: scrolled ? '1px solid var(--primary-accent)' : '1px solid rgba(167, 218, 219, 0)',
+          }}
+          transition={{ duration: 0.3 }}
+        />
         <HeaderContent>
           <motion.div
             ref={logoRef}
