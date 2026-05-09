@@ -2,9 +2,9 @@
 
 import { Box, Container, Typography, Button, Grid, Chip, useTheme } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
-import { motion, useTransform, useScroll } from 'framer-motion';
+import { motion, useTransform, useScroll, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import {
   Compass,
   Network,
@@ -53,15 +53,22 @@ const PageSection = styled(Box)(({ theme }) => ({
   padding: '80px 0',
   position: 'relative',
   overflow: 'hidden',
+  [theme.breakpoints.down('sm')]: {
+    padding: '60px 0',
+  },
 }));
 
-const HeroSection = styled(Box)(() => ({
-  padding: '120px 0 80px', // Extra top padding for header clearance, consistent bottom
+const HeroSection = styled(Box)(({ theme }) => ({
+  padding: '120px 0 80px',
   display: 'flex',
   alignItems: 'center',
   position: 'relative',
   overflow: 'hidden',
   background: BRAND_DARK,
+  [theme.breakpoints.down('sm')]: {
+    padding: '100px 0 60px',
+    minHeight: 'auto',
+  },
 }));
 
 const SolidAccentText = styled('span')(() => ({
@@ -84,6 +91,9 @@ const GlassCard = styled(motion.div)(({ theme }) => ({
     boxShadow: `0 20px 40px rgba(0, 0, 0, 0.4)`,
     transform: 'translateY(-5px)',
   },
+  [theme.breakpoints.down('sm')]: {
+    padding: '24px',
+  },
 }));
 
 const IconBox = styled(Box)(() => ({
@@ -99,12 +109,15 @@ const IconBox = styled(Box)(() => ({
   color: BRAND_TEAL,
 }));
 
-const StatValue = styled(Typography)(() => ({
+const StatValue = styled(Typography)(({ theme }) => ({
   fontSize: '3.5rem',
   fontWeight: 900,
   color: BRAND_TEAL,
   lineHeight: 1,
   marginBottom: '8px',
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '2.5rem',
+  },
 }));
 
 const CTAButton = styled(MagneticButton)(({ theme }) => ({
@@ -123,6 +136,10 @@ const CTAButton = styled(MagneticButton)(({ theme }) => ({
   },
   '&:active': {
     transform: 'scale(0.97)',
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    padding: '14px 24px',
   },
 }));
 
@@ -143,6 +160,10 @@ const SecondaryButton = styled(MagneticButton)(({ theme }) => ({
   },
   '&:active': {
     transform: 'scale(0.97)',
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    padding: '14px 24px',
   },
 }));
 
@@ -248,8 +269,16 @@ const businessImpact = [
   { metric: '10x', label: 'Scalability', title: 'Scalable Growth', description: 'Scale your learning programs efficiently without proportional increases in resources.', icon: OrbitIcon },
 ];
 
+const comparisonData = [
+  { feature: 'Content Creation', legacy: 'Manual storyboarding & research', solara: 'AI-automated blueprinting & mapping' },
+  { feature: 'Personalization', legacy: 'One-size-fits-all static courses', solara: 'Real-time adaptive learning paths' },
+  { feature: 'Delivery Speed', legacy: 'Months for a single program', solara: 'Days to hours with AI assistance' },
+  { feature: 'Insights', legacy: 'Reactive, basic completion rates', solara: 'Predictive analytics & effectiveness gaps' },
+];
+
 export default function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState<'legacy' | 'solara'>('solara');
   const { useWorldClassEntrance, getStaggerProps } = useOptimizedAnimations();
 
   // Reveal entrance for elements
@@ -259,109 +288,68 @@ export default function HomePage() {
     <Box ref={containerRef} sx={{ background: BRAND_DARK, color: '#fff' }}>
       <SkipToContent />
 
-      {/* Hero Section */}
-      <HeroSection role="banner">
-        <RetroGrid className="opacity-50" lightLineColor={BRAND_TEAL} darkLineColor={BRAND_TEAL} />
-        <FloatingOrb size="80vw" color={BRAND_TEAL} x="-10%" y="-10%" opacity={0.15} />
-        <FloatingOrb size="60vw" color={BRAND_INDIGO} x="50%" y="30%" opacity={0.1} />
+      {/* Hero Section - Pure Typographic focused */}
+      <HeroSection role="banner" sx={{ py: { xs: 15, md: 25 }, minHeight: { xs: 'auto', md: '80vh' } }}>
+        <RetroGrid className="opacity-30" lightLineColor={BRAND_TEAL} darkLineColor={BRAND_TEAL} />
 
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-          <Grid container spacing={8} alignItems="center">
-            <Grid size={{ xs: 12, md: 7 }}>
-              <Box className="reveal-item" sx={{ mb: 4 }}>
-                <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 dark:hover:text-neutral-400">
-                  <Chip
-                    icon={<Sparkles size={16} color={BRAND_TEAL} />}
-                    label="Solara — The Intelligent Learning Universe"
-                    sx={{ 
-                      background: 'rgba(167, 218, 219, 0.1)', 
-                      color: BRAND_TEAL, 
-                      fontWeight: 700, 
-                      border: `1px solid ${BRAND_TEAL}30`,
-                      cursor: 'pointer'
-                    }}
-                  />
-                </AnimatedShinyText>
-              </Box>
+          <Box sx={{ maxWidth: '900px' }}>
+            <Box className="reveal-item" sx={{ mb: 4 }}>
+              <AnimatedShinyText className="inline-flex items-center justify-start px-0 py-1 transition ease-out">
+                <Chip
+                  icon={<Sparkles size={16} color={BRAND_TEAL} />}
+                  label="Solara — The Intelligent Learning Universe"
+                  sx={{ 
+                    background: 'rgba(167, 218, 219, 0.1)', 
+                    color: BRAND_TEAL, 
+                    fontWeight: 700, 
+                    border: `1px solid ${BRAND_TEAL}30`,
+                    cursor: 'pointer'
+                  }}
+                />
+              </AnimatedShinyText>
+            </Box>
 
-              <Box className="reveal-item">
-                <Typography variant="h1" sx={{ mb: 3, fontSize: { xs: '3.5rem', md: '5.5rem' }, fontWeight: 900, lineHeight: 1, letterSpacing: '-0.04em' }}>
-                  The Future of Learning, <SolidAccentText>Orchestrated.</SolidAccentText>
-                </Typography>
-              </Box>
+            <Box className="reveal-item">
+              <Typography variant="h1" sx={{ mb: 3, fontSize: { xs: '2.75rem', sm: '4.5rem', md: '6.5rem' }, fontWeight: 900, lineHeight: 1, letterSpacing: '-0.04em' }}>
+                The Future of Learning, <SolidAccentText>Orchestrated.</SolidAccentText>
+              </Typography>
+            </Box>
 
-              <Box className="reveal-item">
-                <Typography variant="h5" sx={{ mb: 6, color: '#b0c5c6', lineHeight: 1.5, fontSize: '1.5rem', fontWeight: 500, maxWidth: '650px' }}>
-                  Solara is not just a platform—it's a complete ecosystem that reimagines every facet of learning design and delivery with unprecedented intelligence.
-                </Typography>
-              </Box>
+            <Box className="reveal-item">
+              <Typography variant="h5" sx={{ mb: 6, color: '#b0c5c6', lineHeight: 1.5, fontSize: { xs: '1.1rem', md: '1.75rem' }, fontWeight: 400, maxWidth: '750px', opacity: 0.9 }}>
+                Solara is not just a platform—it's a complete ecosystem that reimagines every facet of learning design and delivery with unprecedented intelligence.
+              </Typography>
+            </Box>
 
-              <Box className="reveal-item" sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
-                <CTAButton component={Link} href="/polaris" variant="contained" endIcon={<ArrowRight size={20} />} strength={0.1}>
-                  Experience Solara
-                </CTAButton>
-                <SecondaryButton component={Link} href="/polaris" variant="outlined" strength={0.1}>
-                  Explore Modules
-                </SecondaryButton>
-              </Box>
-            </Grid>
-
-            {/* Visual Element */}
-            <Grid size={{ xs: 12, md: 5 }} sx={{ display: { xs: 'none', md: 'block' } }}>
-              <Box className="visual-reveal" sx={{ position: 'relative' }}>
-                <motion.div 
-                  animate={{ rotate: 360 }} 
-                  transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-                  style={{ width: '500px', height: '500px', borderRadius: '50%', border: `1px dashed ${BRAND_TEAL}40`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                >
-                  <Box sx={{ width: 140, height: 140, borderRadius: '50%', background: BRAND_TEAL, animation: `${starGlow} 4s infinite ease-in-out`, boxShadow: `0 0 60px ${BRAND_TEAL}60` }} />
-                </motion.div>
-                
-                {/* Orbiting Icons */}
-                {[0, 60, 120, 180, 240, 300].map((angle, i) => {
-                  const rad = (angle * Math.PI) / 180;
-                  const x = 250 + Math.cos(rad) * 200 - 30;
-                  const y = 250 + Math.sin(rad) * 200 - 30;
-                  return (
-                    <Box key={i} sx={{ position: 'absolute', left: x, top: y, animation: `${float} ${3 + i}s infinite ease-in-out` }}>
-                      <Box sx={{ width: 60, height: 60, borderRadius: '16px', background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(10px)', border: `1px solid ${BRAND_TEAL}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: BRAND_TEAL }}>
-                         {i === 0 && <Compass size={24} />}
-                         {i === 1 && <Network size={24} />}
-                         {i === 2 && <Sparkles size={24} />}
-                         {i === 3 && <OrbitIcon size={24} />}
-                         {i === 4 && <Brain size={24} />}
-                         {i === 5 && <BarChart3 size={24} />}
-                      </Box>
-                    </Box>
-                  );
-                })}
-              </Box>
-            </Grid>
-          </Grid>
+            <Box className="reveal-item" sx={{ display: 'flex', gap: { xs: 2, sm: 3 }, flexWrap: 'wrap' }}>
+              <CTAButton component={Link} href="/polaris" variant="contained" endIcon={<ArrowRight size={20} />} strength={0.1}>
+                Experience Solara
+              </CTAButton>
+              <SecondaryButton component={Link} href="/polaris" variant="outlined" strength={0.1}>
+                Explore Modules
+              </SecondaryButton>
+            </Box>
+          </Box>
         </Container>
-
-        <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} style={{ position: 'absolute', bottom: 40, left: '50%', translateX: '-50%', color: BRAND_TEAL, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-          <Typography variant="caption" sx={{ fontWeight: 700, letterSpacing: '0.1em' }}>DISCOVER</Typography>
-          <ChevronDown size={20} />
-        </motion.div>
       </HeroSection>
 
       {/* Stats Section */}
-      <PageSection>
+      <PageSection sx={{ py: { xs: 8, md: 15 } }}>
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'left', mb: 10 }} className="reveal-item">
+          <Box sx={{ textAlign: 'left', mb: { xs: 6, md: 10 } }} className="reveal-item">
             <Typography variant="overline" sx={{ color: BRAND_TEAL, fontWeight: 900, letterSpacing: '0.3em' }}>BY THE NUMBERS</Typography>
-            <Typography variant="h2" sx={{ fontWeight: 900, mt: 2, mb: 3, fontSize: { xs: '2.5rem', md: '3.5rem' } }}>Why Organizations Choose <SolidAccentText>Smartslate</SolidAccentText></Typography>
+            <Typography variant="h2" sx={{ fontWeight: 900, mt: 2, mb: 3, fontSize: { xs: '2.25rem', sm: '3.5rem', md: '4.5rem' }, lineHeight: 1.1 }}>Why Organizations Choose <SolidAccentText>Smartslate</SolidAccentText></Typography>
           </Box>
 
-          <Grid container spacing={4} {...getStaggerProps(0.15)}>
+          <Grid container spacing={{ xs: 2, md: 4 }} {...getStaggerProps(0.1)}>
             {businessImpact.map((item, i) => (
               <Grid size={{ xs: 12, sm: 6, md: 3 }} key={i}>
-                <GlassCard className="reveal-item" sx={{ textAlign: 'center', py: 6 }}>
-                  <item.icon size={32} color={BRAND_TEAL} style={{ marginBottom: 24, opacity: 0.8 }} />
-                  <StatValue>{item.metric}</StatValue>
-                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1, color: BRAND_TEAL }}>{item.label}</Typography>
-                  <Typography variant="body2" sx={{ color: '#b0c5c6', opacity: 0.8 }}>{item.description}</Typography>
+                <GlassCard className="reveal-item" sx={{ textAlign: 'left', p: { xs: 3, md: 5 } }}>
+                  <item.icon size={28} color={BRAND_TEAL} style={{ marginBottom: 20, opacity: 0.8 }} />
+                  <StatValue sx={{ fontSize: { xs: '2.75rem', md: '4rem' } }}>{item.metric}</StatValue>
+                  <Typography variant="h6" sx={{ fontWeight: 800, mb: 1, color: BRAND_TEAL, fontSize: { xs: '1rem', md: '1.25rem' } }}>{item.label}</Typography>
+                  <Typography variant="body2" sx={{ color: '#b0c5c6', opacity: 0.8, lineHeight: 1.6 }}>{item.description}</Typography>
                 </GlassCard>
               </Grid>
             ))}
@@ -369,35 +357,132 @@ export default function HomePage() {
         </Container>
       </PageSection>
 
-      {/* Solara Platform Section */}
-      <PageSection sx={{ background: BRAND_DARK }}>
-        <FloatingOrb size="40vw" color={BRAND_INDIGO} x="80%" y="10%" opacity={0.1} />
+      {/* Comparison Section - Interactive Tabbed Switcher */}
+      <PageSection sx={{ background: 'rgba(2, 12, 27, 0.6)', py: { xs: 10, md: 20 } }}>
         <Container maxWidth="lg">
-          <Box sx={{ mb: 12 }} className="reveal-item">
+          <Box sx={{ mb: { xs: 6, md: 10 } }} className="reveal-item">
+            <Typography variant="overline" sx={{ color: BRAND_TEAL, fontWeight: 900, letterSpacing: '0.3em' }}>SOLARA VS LEGACY</Typography>
+            <Typography variant="h2" sx={{ fontWeight: 900, mt: 2, mb: 3, fontSize: { xs: '2.25rem', sm: '3.5rem', md: '4rem' } }}>The <SolidAccentText>Evolution</SolidAccentText> of Learning</Typography>
+          </Box>
+
+          {/* Platform Switcher (Always visible for interactivity) */}
+          <Box sx={{ display: 'flex', mb: 6, background: 'rgba(255,255,255,0.05)', borderRadius: '16px', p: 0.75, maxWidth: '500px' }}>
+            <Button 
+              fullWidth 
+              onClick={() => setActiveTab('legacy')} 
+              sx={{ 
+                borderRadius: '12px', 
+                color: activeTab === 'legacy' ? '#fff' : 'rgba(255,255,255,0.4)', 
+                background: activeTab === 'legacy' ? 'rgba(255,255,255,0.1)' : 'transparent',
+                fontWeight: 700,
+                textTransform: 'none',
+                py: 1.5,
+                transition: 'all 0.3s cubic-bezier(0.23, 1, 0.32, 1)'
+              }}
+            >
+              Legacy Learning
+            </Button>
+            <Button 
+              fullWidth 
+              onClick={() => setActiveTab('solara')} 
+              sx={{ 
+                borderRadius: '12px', 
+                color: activeTab === 'solara' ? '#fff' : 'rgba(255,255,255,0.4)', 
+                background: activeTab === 'solara' ? BRAND_TEAL + '20' : 'transparent',
+                fontWeight: 700,
+                textTransform: 'none',
+                py: 1.5,
+                transition: 'all 0.3s cubic-bezier(0.23, 1, 0.32, 1)'
+              }}
+            >
+              Solara AI
+            </Button>
+          </Box>
+
+          {/* Dynamic Content Area */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, x: activeTab === 'solara' ? 20 : -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: activeTab === 'solara' ? -20 : 20 }}
+              transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+            >
+              <Grid container spacing={4}>
+                {activeTab === 'legacy' ? (
+                  <Grid size={12}>
+                    <Box sx={{ p: { xs: 4, md: 6 }, borderRadius: '32px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                      <Typography variant="h4" sx={{ mb: 6, fontWeight: 800, opacity: 0.5, display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Box sx={{ width: 12, height: 12, borderRadius: '50%', background: 'rgba(255,255,255,0.3)' }} />
+                        Static Learning Infrastructure
+                      </Typography>
+                      <Grid container spacing={4}>
+                        {comparisonData.map((item, i) => (
+                          <Grid size={{ xs: 12, md: 6 }} key={i}>
+                            <Box sx={{ pb: 3, borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                              <Typography variant="caption" sx={{ color: BRAND_TEAL, fontWeight: 800, letterSpacing: '0.1em', display: 'block', mb: 1.5 }}>{item.feature.toUpperCase()}</Typography>
+                              <Typography variant="h6" sx={{ fontWeight: 500, opacity: 0.7, fontSize: '1.15rem' }}>{item.legacy}</Typography>
+                            </Box>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </Box>
+                  </Grid>
+                ) : (
+                  <Grid size={12}>
+                    <Box sx={{ p: { xs: 4, md: 6 }, borderRadius: '32px', background: `${BRAND_TEAL}10`, border: `1px solid ${BRAND_TEAL}30`, position: 'relative' }}>
+                      <Box sx={{ position: 'absolute', top: 30, right: 30, background: BRAND_TEAL, color: BRAND_DARK, px: 2, py: 0.75, borderRadius: '24px', fontSize: '0.75rem', fontWeight: 900 }}>ORCHESTRATED</Box>
+                      <Typography variant="h4" sx={{ mb: 6, fontWeight: 800, color: BRAND_TEAL, display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Zap size={28} fill={BRAND_TEAL} />
+                        Next-Gen Intelligent Universe
+                      </Typography>
+                      <Grid container spacing={4}>
+                        {comparisonData.map((item, i) => (
+                          <Grid size={{ xs: 12, md: 6 }} key={i}>
+                            <Box sx={{ pb: 3, borderBottom: `1px solid ${BRAND_TEAL}20` }}>
+                              <Typography variant="caption" sx={{ color: BRAND_TEAL, fontWeight: 800, letterSpacing: '0.1em', display: 'block', mb: 1.5 }}>{item.feature.toUpperCase()}</Typography>
+                              <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1.25rem' }}>{item.solara}</Typography>
+                            </Box>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </Box>
+                  </Grid>
+                )}
+              </Grid>
+            </motion.div>
+          </AnimatePresence>
+        </Container>
+      </PageSection>
+
+      {/* Solara Modules Section */}
+      <PageSection sx={{ py: { xs: 10, md: 20 } }}>
+        <Container maxWidth="lg">
+          <Box sx={{ mb: { xs: 8, md: 12 } }} className="reveal-item">
             <Chip label="SOLARA PLATFORM" sx={{ mb: 3, background: `${BRAND_TEAL}10`, color: BRAND_TEAL, fontWeight: 800, border: `1px solid ${BRAND_TEAL}30` }} />
-            <Typography variant="h2" sx={{ fontWeight: 900, mb: 3, fontSize: { xs: '2.5rem', md: '4rem' } }}>The Complete <SolidAccentText>Learning Platform</SolidAccentText></Typography>
-            <Typography variant="h6" sx={{ color: '#b0c5c6', maxWidth: '800px', fontWeight: 400 }}>
+            <Typography variant="h2" sx={{ fontWeight: 900, mb: 3, fontSize: { xs: '2.25rem', sm: '3.5rem', md: '5rem' }, lineHeight: 1 }}>The Complete <SolidAccentText>Learning Universe</SolidAccentText></Typography>
+            <Typography variant="h6" sx={{ color: '#b0c5c6', maxWidth: '800px', fontWeight: 400, fontSize: { xs: '1rem', md: '1.5rem' }, opacity: 0.8 }}>
               Solara is our flagship platform—a unified ecosystem that covers every stage of the learning lifecycle, from needs analysis to delivery and analytics.
             </Typography>
           </Box>
 
-          <Grid container spacing={4} {...getStaggerProps(0.1)}>
+          <Grid container spacing={{ xs: 2.5, md: 4 }} {...getStaggerProps(0.1)}>
             {modules.map((module) => (
               <Grid size={{ xs: 12, md: 6, lg: 4 }} key={module.id}>
-                <GlassCard className="reveal-item" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <GlassCard className="reveal-item" sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: { xs: 3.5, md: 5 } }}>
                   <Badge label={module.status} variant_type={module.isLive ? 'live' : 'soon'} />
                   <IconBox>
-                    <module.icon size={32} />
+                    <module.icon size={30} />
                   </IconBox>
-                  <Typography variant="h4" sx={{ fontWeight: 800, mb: 1 }}>{module.name}</Typography>
-                  <Typography variant="subtitle2" sx={{ color: BRAND_TEAL, fontWeight: 700, mb: 3, letterSpacing: '0.05em' }}>{module.tagline.toUpperCase()}</Typography>
-                  <Typography variant="body1" sx={{ color: '#b0c5c6', mb: 4, lineHeight: 1.7, flexGrow: 1 }}>{module.description}</Typography>
+                  <Typography variant="h4" sx={{ fontWeight: 800, mb: 1, fontSize: { xs: '1.5rem', md: '2.25rem' } }}>{module.name}</Typography>
+                  <Typography variant="subtitle2" sx={{ color: BRAND_TEAL, fontWeight: 700, mb: 3, letterSpacing: '0.05em', fontSize: '0.7rem' }}>{module.tagline.toUpperCase()}</Typography>
+                  <Typography variant="body1" sx={{ color: '#b0c5c6', mb: 4, lineHeight: 1.6, flexGrow: 1, fontSize: '0.95rem' }}>{module.description}</Typography>
                   
                   <Box sx={{ mb: 4 }}>
                     {module.features.map((feat, idx) => (
-                      <Box key={idx} sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1.5 }}>
-                        <CheckCircle2 size={18} color={BRAND_TEAL} style={{ opacity: 0.8 }} />
-                        <Typography variant="body2" sx={{ color: '#b0c5c6', opacity: 0.9 }}>{feat}</Typography>
+                      <Box key={idx} sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1.25 }}>
+                        <CheckCircle2 size={16} color={BRAND_TEAL} style={{ opacity: 0.7 }} />
+                        <Typography variant="body2" sx={{ color: '#b0c5c6', opacity: 0.9, fontSize: '0.85rem' }}>{feat}</Typography>
                       </Box>
                     ))}
                   </Box>
@@ -408,12 +493,12 @@ export default function HomePage() {
                       href="/polaris" 
                       variant="text" 
                       endIcon={<ArrowRight size={18} />}
-                      sx={{ color: BRAND_TEAL, fontWeight: 700, alignSelf: 'flex-start', p: 0, '&:hover': { background: 'transparent', transform: 'translateX(5px)' }, transition: 'all 0.3s' }}
+                      sx={{ color: BRAND_TEAL, fontWeight: 800, alignSelf: 'flex-start', p: 0, fontSize: '0.95rem', '&:hover': { background: 'transparent', transform: 'translateX(5px)' }, transition: 'all 0.3s' }}
                     >
-                      Try it now
+                      Experience Now
                     </Button>
                   ) : (
-                    <Typography variant="caption" sx={{ color: 'rgba(167, 218, 219, 0.4)', fontWeight: 600 }}>Feature coming soon</Typography>
+                    <Typography variant="caption" sx={{ color: 'rgba(167, 218, 219, 0.3)', fontWeight: 600 }}>In active development</Typography>
                   )}
                 </GlassCard>
               </Grid>
@@ -423,23 +508,23 @@ export default function HomePage() {
       </PageSection>
 
       {/* Core Capabilities */}
-      <PageSection>
+      <PageSection sx={{ py: { xs: 8, md: 15 }, background: 'rgba(2, 12, 27, 0.4)' }}>
         <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'left', mb: 12 }} className="reveal-item">
+          <Box sx={{ textAlign: 'left', mb: { xs: 6, md: 10 } }} className="reveal-item">
             <Typography variant="overline" sx={{ color: BRAND_TEAL, fontWeight: 900, letterSpacing: '0.3em' }}>CORE CAPABILITIES</Typography>
-            <Typography variant="h2" sx={{ fontWeight: 900, mt: 2, mb: 3, fontSize: { xs: '2.5rem', md: '3.5rem' } }}>Built for <SolidAccentText>Learning Excellence</SolidAccentText></Typography>
+            <Typography variant="h2" sx={{ fontWeight: 900, mt: 2, mb: 3, fontSize: { xs: '2.25rem', sm: '3.5rem', md: '4.5rem' }, lineHeight: 1.1 }}>Built for <SolidAccentText>Learning Excellence</SolidAccentText></Typography>
           </Box>
 
-          <Grid container spacing={4} {...getStaggerProps(0.1)}>
+          <Grid container spacing={{ xs: 2, md: 4 }} {...getStaggerProps(0.1)}>
             {capabilities.map((cap, i) => (
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={i}>
                 <motion.div whileHover={{ y: -10 }} transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}>
                   <Box className="reveal-item" sx={{ p: 4, borderRadius: '24px', background: 'rgba(255,255,255,0.02)', border: `1px solid ${BRAND_TEAL}15`, height: '100%', transition: 'border 0.3s ease', '&:hover': { borderColor: `${BRAND_TEAL}40` } }}>
                     <Box sx={{ mb: 3, color: BRAND_TEAL }}>
-                      <cap.icon size={32} />
+                      <cap.icon size={28} />
                     </Box>
-                    <Typography variant="h6" sx={{ fontWeight: 800, mb: 2 }}>{cap.title}</Typography>
-                    <Typography variant="body2" sx={{ color: '#b0c5c6', lineHeight: 1.8, opacity: 0.8 }}>{cap.description}</Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 800, mb: 2, fontSize: '1.1rem' }}>{cap.title}</Typography>
+                    <Typography variant="body2" sx={{ color: '#b0c5c6', lineHeight: 1.8, opacity: 0.8, fontSize: '0.9rem' }}>{cap.description}</Typography>
                   </Box>
                 </motion.div>
               </Grid>
@@ -449,18 +534,21 @@ export default function HomePage() {
       </PageSection>
 
       {/* CTA Section */}
-      <PageSection sx={{ background: BRAND_DARK }}>
-        <FloatingOrb size="50vw" color={BRAND_INDIGO} x="70%" y="-10%" opacity={0.1} />
+      <PageSection sx={{ py: { xs: 12, md: 25 }, background: BRAND_DARK }}>
         <Container maxWidth="lg" sx={{ textAlign: 'left', position: 'relative', zIndex: 1 }}>
-          <motion.div animate={{ rotate: [0, 5, -5, 0] }} transition={{ duration: 5, repeat: Infinity }}>
+          <Box className="reveal-item">
             <Star size={64} color={BRAND_TEAL} style={{ marginBottom: 32 }} />
-          </motion.div>
-          <Typography variant="h2" sx={{ fontWeight: 900, mb: 4, fontSize: { xs: '3rem', md: '4.5rem' } }}>Ready to Transform?</Typography>
-          <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 8, lineHeight: 1.6, fontWeight: 400, maxWidth: '800px' }}>
-            See how Smartslate can help you build a future-ready workforce with intelligent, scalable learning solutions.
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 3, justifyContent: 'flex-start', flexWrap: 'wrap' }}>
-            <CTAButton component={Link} href="/contact" variant="contained" strength={0.1}>
+          </Box>
+          <Box className="reveal-item">
+            <Typography variant="h2" sx={{ fontWeight: 900, mb: 4, fontSize: { xs: '2.75rem', sm: '4rem', md: '5.5rem' }, lineHeight: 1 }}>Ready to <SolidAccentText>Transform?</SolidAccentText></Typography>
+          </Box>
+          <Box className="reveal-item">
+            <Typography variant="h5" sx={{ color: '#b0c5c6', mb: 8, lineHeight: 1.6, fontWeight: 400, maxWidth: '800px', fontSize: { xs: '1.1rem', md: '1.75rem' }, opacity: 0.8 }}>
+              See how Smartslate can help you build a future-ready workforce with intelligent, scalable learning solutions.
+            </Typography>
+          </Box>
+          <Box className="reveal-item" sx={{ display: 'flex', gap: 3, justifyContent: 'flex-start', flexWrap: 'wrap' }}>
+            <CTAButton component={Link} href="/contact" variant="contained" strength={0.1} sx={{ width: { xs: '100%', sm: 'auto' } }}>
               Schedule a Demo
             </CTAButton>
           </Box>

@@ -5,10 +5,10 @@ import { Box, Button, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useOptimizedAnimations } from '@/hooks/useOptimizedAnimations';
 
+// Replicating smartslate-final logic
 const HeaderWrapper = styled(motion.header, {
   shouldForwardProp: (prop) => prop !== 'hide'
 })<{ hide?: boolean }>(({ theme, hide }) => ({
@@ -83,21 +83,70 @@ const NavLink = styled(Link)(({ theme }) => ({
   },
 }));
 
-const MobileMenu = styled(motion.div)(({ theme }) => ({
+// Mobile Menu Components mirroring smartslate-final
+const MobileMenuBackdrop = styled(motion.div)(() => ({
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  backdropFilter: 'blur(8px)',
+  zIndex: 1100,
+}));
+
+const MobileMenuPanel = styled(motion.div)(({ theme }) => ({
   position: 'fixed',
   top: 0,
   right: 0,
-  width: '100%',
-  maxWidth: '400px',
-  height: '100vh',
-  backgroundColor: 'rgba(9, 21, 33, 0.95)',
-  backdropFilter: 'blur(20px)',
-  borderLeft: '1px solid rgba(167, 218, 219, 0.2)',
+  width: '85%',
+  maxWidth: 360,
+  height: '100%',
+  backgroundColor: 'rgba(13, 27, 42, 0.98)',
+  backdropFilter: 'blur(24px)',
+  zIndex: 1101,
   padding: theme.spacing(4),
-  zIndex: 1001,
+  boxShadow: '-8px 0 32px rgba(0, 0, 0, 0.4)',
+  borderLeft: `1px solid var(--primary-accent)`,
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(2),
+  overflow: 'hidden',
+}));
+
+const MobileNavLink = styled(Link)(({ theme }) => ({
+  color: '#fff',
+  textDecoration: 'none',
+  fontSize: '1.25rem',
+  fontWeight: 700,
+  padding: '16px 0',
+  borderBottom: '1px solid rgba(255,255,255,0.05)',
+  display: 'block',
+  transition: 'all 0.2s ease',
+  '&:hover': {
+    color: 'var(--primary-accent)',
+    transform: 'translateX(8px)',
+  },
+}));
+
+const HamburgerButton = styled(motion.button)(({ theme }) => ({
+  display: 'none',
+  border: 'none',
+  background: 'transparent',
+  cursor: 'pointer',
+  padding: 8,
+  zIndex: 1102,
+  [theme.breakpoints.down('md')]: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 5,
+  },
+}));
+
+const HamburgerLine = styled(motion.span)(() => ({
+  width: 24,
+  height: 2,
+  backgroundColor: 'var(--primary-accent)',
+  borderRadius: 2,
 }));
 
 export default function Header() {
@@ -166,12 +215,11 @@ export default function Header() {
               ))}
             </Box>
             
-            <Button
-              onClick={() => setMobileMenuOpen(true)}
-              sx={{ display: { md: 'none' }, minWidth: 'auto', p: 1, color: 'var(--primary-accent)' }}
-            >
-              <Menu size={24} />
-            </Button>
+            <HamburgerButton onClick={() => setMobileMenuOpen(true)}>
+              <HamburgerLine animate={mobileMenuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }} />
+              <HamburgerLine animate={mobileMenuOpen ? { opacity: 0 } : { opacity: 1 }} />
+              <HamburgerLine animate={mobileMenuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }} />
+            </HamburgerButton>
           </Box>
         </HeaderContent>
       </HeaderWrapper>
@@ -179,39 +227,47 @@ export default function Header() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
-            <motion.div
+            <MobileMenuBackdrop
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileMenuOpen(false)}
-              style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 1000, backdropFilter: 'blur(4px)' }}
             />
-            <MobileMenu
+            <MobileMenuPanel
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             >
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 4 }}>
-                <Button onClick={() => setMobileMenuOpen(false)} sx={{ color: '#fff' }}><X size={32} /></Button>
+              <Box sx={{ mb: 6, mt: 2 }}>
+                <Image src="/logo.png" alt="Smartslate" width={120} height={30} priority style={{ height: 'auto' }} />
               </Box>
-              {navItems.map((item, i) => (
-                <motion.div
-                  key={item.label}
-                  initial={{ x: 20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.1 + i * 0.05 }}
-                >
-                  <Link
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    style={{ color: '#fff', fontSize: '2rem', fontWeight: 800, textDecoration: 'none', display: 'block', padding: '16px 0' }}
+              <nav style={{ display: 'flex', flexDirection: 'column' }}>
+                {navItems.map((item, i) => (
+                  <motion.div
+                    key={item.label}
+                    initial={{ x: 20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: i * 0.05 }}
                   >
-                    {item.label}
-                  </Link>
-                </motion.div>
-              ))}
-            </MobileMenu>
+                    <MobileNavLink href={item.href} onClick={() => setMobileMenuOpen(false)}>
+                      {item.label}
+                    </MobileNavLink>
+                  </motion.div>
+                ))}
+              </nav>
+              <Box sx={{ mt: 'auto' }}>
+                <Button 
+                  component={Link} 
+                  href="/contact" 
+                  fullWidth 
+                  variant="contained" 
+                  sx={{ background: 'var(--secondary-accent)', py: 2, fontWeight: 800, borderRadius: '12px' }}
+                >
+                  Get Started
+                </Button>
+              </Box>
+            </MobileMenuPanel>
           </>
         )}
       </AnimatePresence>
