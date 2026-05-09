@@ -31,6 +31,7 @@ import { MagneticButton } from '@/components/animations/MagneticButton';
 import { FloatingOrb } from '@/components/animations/FloatingOrb';
 import { RetroGrid } from '@/components/ui/retro-grid';
 import { AnimatedShinyText } from '@/components/ui/animated-shiny-text';
+import BetaRequestModal from '@/components/landing/BetaRequestModal';
 
 // Colors
 const BRAND_TEAL = '#a7dadb';
@@ -278,6 +279,7 @@ const comparisonData = [
 export default function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<'legacy' | 'solara'>('solara');
+  const [betaModalOpen, setBetaModalOpen] = useState(false);
   const { useWorldClassEntrance, getStaggerProps } = useOptimizedAnimations();
 
   // Reveal entrance for elements
@@ -325,18 +327,20 @@ export default function HomePage() {
             <Typography variant="h2" sx={{ fontWeight: 900, mt: 2, mb: 3, fontSize: { xs: '2.25rem', sm: '3.5rem', md: '4.5rem' }, lineHeight: 1.1 }}>Why Organizations Choose <SolidAccentText>Smartslate</SolidAccentText></Typography>
           </Box>
 
-          <Grid container spacing={{ xs: 2, md: 4 }} {...getStaggerProps(0.1)}>
-            {businessImpact.map((item, i) => (
-              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={i}>
-                <GlassCard className="reveal-item" sx={{ textAlign: 'left', p: { xs: 3, md: 5 } }}>
-                  <item.icon size={28} color={BRAND_TEAL} style={{ marginBottom: 20, opacity: 0.8 }} />
-                  <StatValue sx={{ fontSize: { xs: '2.75rem', md: '4rem' } }}>{item.metric}</StatValue>
-                  <Typography variant="h6" sx={{ fontWeight: 800, mb: 1, color: BRAND_TEAL, fontSize: { xs: '1rem', md: '1.25rem' } }}>{item.label}</Typography>
-                  <Typography variant="body2" sx={{ color: '#b0c5c6', opacity: 0.8, lineHeight: 1.6 }}>{item.description}</Typography>
-                </GlassCard>
-              </Grid>
-            ))}
-          </Grid>
+          <motion.div {...getStaggerProps(0.1)}>
+            <Grid container spacing={{ xs: 2, md: 4 }}>
+              {businessImpact.map((item, i) => (
+                <Grid size={{ xs: 12, sm: 6, md: 3 }} key={i}>
+                  <GlassCard className="reveal-item" sx={{ textAlign: 'left', p: { xs: 3, md: 5 } }}>
+                    <item.icon size={28} color={BRAND_TEAL} style={{ marginBottom: 20, opacity: 0.8 }} />
+                    <StatValue sx={{ fontSize: { xs: '2.75rem', md: '4rem' } }}>{item.metric}</StatValue>
+                    <Typography variant="h6" sx={{ fontWeight: 800, mb: 1, color: BRAND_TEAL, fontSize: { xs: '1rem', md: '1.25rem' } }}>{item.label}</Typography>
+                    <Typography variant="body2" sx={{ color: '#b0c5c6', opacity: 0.8, lineHeight: 1.6 }}>{item.description}</Typography>
+                  </GlassCard>
+                </Grid>
+              ))}
+            </Grid>
+          </motion.div>
         </Container>
       </PageSection>
 
@@ -448,44 +452,64 @@ export default function HomePage() {
             </Typography>
           </Box>
 
-          <Grid container spacing={{ xs: 2.5, md: 4 }} {...getStaggerProps(0.1)}>
-            {modules.map((module) => (
-              <Grid size={{ xs: 12, md: 6, lg: 4 }} key={module.id}>
-                <GlassCard className="reveal-item" sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: { xs: 3.5, md: 5 } }}>
-                  <Badge label={module.status} variant_type={module.isLive ? 'live' : 'soon'} />
-                  <IconBox>
-                    <module.icon size={30} />
-                  </IconBox>
-                  <Typography variant="h4" sx={{ fontWeight: 800, mb: 1, fontSize: { xs: '1.5rem', md: '2.25rem' } }}>{module.name}</Typography>
-                  <Typography variant="subtitle2" sx={{ color: BRAND_TEAL, fontWeight: 700, mb: 3, letterSpacing: '0.05em', fontSize: '0.7rem' }}>{module.tagline.toUpperCase()}</Typography>
-                  <Typography variant="body1" sx={{ color: '#b0c5c6', mb: 4, lineHeight: 1.6, flexGrow: 1, fontSize: '0.95rem' }}>{module.description}</Typography>
-                  
-                  <Box sx={{ mb: 4 }}>
-                    {module.features.map((feat, idx) => (
-                      <Box key={idx} sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1.25 }}>
-                        <CheckCircle2 size={16} color={BRAND_TEAL} style={{ opacity: 0.7 }} />
-                        <Typography variant="body2" sx={{ color: '#b0c5c6', opacity: 0.9, fontSize: '0.85rem' }}>{feat}</Typography>
-                      </Box>
-                    ))}
-                  </Box>
+          <motion.div {...getStaggerProps(0.1)}>
+            <Grid container spacing={{ xs: 2.5, md: 4 }}>
+              {modules.map((module) => (
+                <Grid size={{ xs: 12, md: 6, lg: 4 }} key={module.id}>
+                  <GlassCard className="reveal-item" sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: { xs: 3.5, md: 5 } }}>
+                    <Badge label={module.status} variant_type={module.isLive ? 'live' : 'soon'} />
+                    <IconBox>
+                      <module.icon size={30} />
+                    </IconBox>
+                    <Typography variant="h4" sx={{ fontWeight: 800, mb: 1, fontSize: { xs: '1.5rem', md: '2.25rem' } }}>{module.name}</Typography>
+                    <Typography variant="subtitle2" sx={{ color: BRAND_TEAL, fontWeight: 700, mb: 3, letterSpacing: '0.05em', fontSize: '0.7rem' }}>{module.tagline.toUpperCase()}</Typography>
+                    <Typography variant="body1" sx={{ color: '#b0c5c6', mb: 4, lineHeight: 1.6, flexGrow: 1, fontSize: '0.95rem' }}>{module.description}</Typography>
+                    
+                    <Box sx={{ mb: 4 }}>
+                      {module.features.map((feat, idx) => (
+                        <Box key={idx} sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1.25 }}>
+                          <CheckCircle2 size={16} color={BRAND_TEAL} style={{ opacity: 0.7 }} />
+                          <Typography variant="body2" sx={{ color: '#b0c5c6', opacity: 0.9, fontSize: '0.85rem' }}>{feat}</Typography>
+                        </Box>
+                      ))}
+                    </Box>
 
-                  {module.isLive ? (
-                    <Button 
-                      component={Link} 
-                      href="/polaris" 
-                      variant="text" 
-                      endIcon={<ArrowRight size={18} />}
-                      sx={{ color: BRAND_TEAL, fontWeight: 800, alignSelf: 'flex-start', p: 0, fontSize: '0.95rem', '&:hover': { background: 'transparent', transform: 'translateX(5px)' }, transition: 'all 0.3s' }}
-                    >
-                      Experience Now
-                    </Button>
-                  ) : (
-                    <Typography variant="caption" sx={{ color: 'rgba(167, 218, 219, 0.3)', fontWeight: 600 }}>In active development</Typography>
-                  )}
-                </GlassCard>
-              </Grid>
-            ))}
-          </Grid>
+                    {module.id === 'constellation' ? (
+                      <Button 
+                        variant="contained" 
+                        onClick={() => setBetaModalOpen(true)}
+                        sx={{ 
+                          background: BRAND_INDIGO, 
+                          color: '#fff', 
+                          fontWeight: 800, 
+                          alignSelf: 'flex-start', 
+                          px: 3, 
+                          py: 1,
+                          borderRadius: '10px',
+                          textTransform: 'none',
+                          '&:hover': { background: '#3730A3' }
+                        }}
+                      >
+                        Request Beta Access
+                      </Button>
+                    ) : module.isLive ? (
+                      <Button 
+                        component={Link} 
+                        href="/polaris" 
+                        variant="text" 
+                        endIcon={<ArrowRight size={18} />}
+                        sx={{ color: BRAND_TEAL, fontWeight: 800, alignSelf: 'flex-start', p: 0, fontSize: '0.95rem', '&:hover': { background: 'transparent', transform: 'translateX(5px)' }, transition: 'all 0.3s' }}
+                      >
+                        Experience Now
+                      </Button>
+                    ) : (
+                      <Typography variant="caption" sx={{ color: 'rgba(167, 218, 219, 0.3)', fontWeight: 600 }}>In active development</Typography>
+                    )}
+                  </GlassCard>
+                </Grid>
+              ))}
+            </Grid>
+          </motion.div>
         </Container>
       </PageSection>
 
@@ -497,10 +521,10 @@ export default function HomePage() {
             <Typography variant="h2" sx={{ fontWeight: 900, mt: 2, mb: 3, fontSize: { xs: '2.25rem', sm: '3.5rem', md: '4.5rem' }, lineHeight: 1.1 }}>Built for <SolidAccentText>Learning Excellence</SolidAccentText></Typography>
           </Box>
 
-          <Grid container spacing={{ xs: 2, md: 4 }} {...getStaggerProps(0.1)}>
-            {capabilities.map((cap, i) => (
-              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={i}>
-                <motion.div whileHover={{ y: -10 }} transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}>
+          <motion.div {...getStaggerProps(0.1)}>
+            <Grid container spacing={{ xs: 2, md: 4 }}>
+              {capabilities.map((cap, i) => (
+                <Grid size={{ xs: 12, sm: 6, md: 4 }} key={i}>
                   <Box className="reveal-item" sx={{ p: 4, borderRadius: '24px', background: 'rgba(255,255,255,0.02)', border: `1px solid ${BRAND_TEAL}15`, height: '100%', transition: 'border 0.3s ease', '&:hover': { borderColor: `${BRAND_TEAL}40` } }}>
                     <Box sx={{ mb: 3, color: BRAND_TEAL }}>
                       <cap.icon size={28} />
@@ -508,10 +532,10 @@ export default function HomePage() {
                     <Typography variant="h6" sx={{ fontWeight: 800, mb: 2, fontSize: '1.1rem' }}>{cap.title}</Typography>
                     <Typography variant="body2" sx={{ color: '#b0c5c6', lineHeight: 1.8, opacity: 0.8, fontSize: '0.9rem' }}>{cap.description}</Typography>
                   </Box>
-                </motion.div>
-              </Grid>
-            ))}
-          </Grid>
+                </Grid>
+              ))}
+            </Grid>
+          </motion.div>
         </Container>
       </PageSection>
 
@@ -536,6 +560,8 @@ export default function HomePage() {
           </Box>
         </Container>
       </PageSection>
+
+      <BetaRequestModal open={betaModalOpen} onClose={() => setBetaModalOpen(false)} />
     </Box>
   );
 }
