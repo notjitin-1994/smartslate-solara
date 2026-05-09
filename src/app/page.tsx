@@ -59,15 +59,14 @@ const PageSection = styled(Box)(({ theme }) => ({
 }));
 
 const HeroSection = styled(Box)(({ theme }) => ({
-  padding: '120px 0 80px',
+  padding: 'calc(var(--header-total-height-mobile) + 2rem) 0 3rem',
   display: 'flex',
   alignItems: 'center',
   position: 'relative',
   overflow: 'hidden',
   background: BRAND_DARK,
-  [theme.breakpoints.down('sm')]: {
-    padding: '100px 0 60px',
-    minHeight: 'auto',
+  [theme.breakpoints.up('md')]: {
+    padding: 'calc(var(--header-total-height-desktop) + 3rem) 0 4rem',
   },
 }));
 
@@ -289,7 +288,7 @@ export default function HomePage() {
       <SkipToContent />
 
       {/* Hero Section - Pure Typographic focused */}
-      <HeroSection role="banner" sx={{ py: { xs: 15, md: 25 }, minHeight: { xs: 'auto', md: '80vh' } }}>
+      <HeroSection role="banner">
         <RetroGrid className="opacity-30" lightLineColor={BRAND_TEAL} darkLineColor={BRAND_TEAL} />
 
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
