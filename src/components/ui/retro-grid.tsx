@@ -572,7 +572,7 @@ export function RetroGrid({
         </div>
       ) : null}
       <canvas ref={canvasRef} className={cn("absolute inset-0 size-full", isWebGlReady ? "opacity-100" : "opacity-0")} />
-      <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent to-90% dark:from-black" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#020C1B] to-transparent to-90%" />
     </div>
   )
 }
